@@ -13,9 +13,8 @@
     "resolveJsonModule": true,
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true,
-    "allowTsExtensions": true,
+    "sourceMap": true
   },
-  "include": ["src/**/*", "generated/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
