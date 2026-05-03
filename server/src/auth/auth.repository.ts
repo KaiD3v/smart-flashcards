@@ -1,42 +1,30 @@
 import type { PrismaClient } from "../../generated/prisma/client";
+import type { CreateUserInput } from "../user/user.repository";
+import { UserRepository } from "../user/user.repository";
 import type { AuthUser } from "./auth.types";
 
-export type CreateUserInput = {
-  email: string;
-  nickname: string;
-  name: string | null;
-  passwordHash: string;
-};
+export type { CreateUserInput };
 
 export class AuthRepository {
-  constructor(private readonly prisma: PrismaClient) {}
+  private readonly users: UserRepository;
+
+  constructor(prisma: PrismaClient) {
+    this.users = new UserRepository(prisma);
+  }
 
   findUserByEmail(email: string): Promise<AuthUser | null> {
-    return this.prisma.user.findUnique({
-      where: { email },
-    }) as unknown as Promise<AuthUser | null>;
+    return this.users.findByEmail(email);
   }
 
   findUserByNickname(nickname: string): Promise<AuthUser | null> {
-    return this.prisma.user.findUnique({
-      where: { nickname } as never,
-    }) as unknown as Promise<AuthUser | null>;
+    return this.users.findByNickname(nickname);
   }
 
   findUserById(id: string): Promise<AuthUser | null> {
-    return this.prisma.user.findUnique({
-      where: { id } as never,
-    }) as unknown as Promise<AuthUser | null>;
+    return this.users.findById(id);
   }
 
   createUser(input: CreateUserInput): Promise<AuthUser> {
-    return this.prisma.user.create({
-      data: {
-        email: input.email,
-        nickname: input.nickname,
-        name: input.name,
-        password: input.passwordHash,
-      } as never,
-    }) as unknown as Promise<AuthUser>;
+    return this.users.create(input);
   }
 }

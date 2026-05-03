@@ -1,3 +1,4 @@
+import "./types/express-augmentation";
 import cookieParser from "cookie-parser";
 import express, { type Express } from "express";
 import type { PrismaClient } from "../generated/prisma/client";
