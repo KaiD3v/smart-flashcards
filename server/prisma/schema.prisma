@@ -14,11 +14,43 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  nickname  String   @unique
+  id        String    @id @default(uuid())
+  email     String    @unique
+  nickname  String    @unique
   name      String?
   password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  subjects  Subject[]
+}
+
+model Subject {
+  id          String      @id @default(uuid())
+  name        String
+  description String?
+  imageUrl    String?
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  flashcards  Flashcard[]
+
+  @@index([userId])
+}
+
+model Flashcard {
+  id        String   @id @default(uuid())
+  front     String
+  back      String
+  /**
+   * Ordem de exibição dentro da matéria (reordenação no UI).
+   */
+  order     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  subjectId String
+
+  @@index([subjectId, order])
 }
