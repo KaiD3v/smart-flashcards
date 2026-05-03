@@ -19,7 +19,13 @@ function resolveCookieOptions(): CookieOptions {
   };
 }
 
-export function createAuthRouter(prisma: PrismaClient): Router {
+export type AuthRouterBundle = {
+  router: Router;
+  authService: AuthService;
+  cookieName: string;
+};
+
+export function createAuthRouter(prisma: PrismaClient): AuthRouterBundle {
   const jwtSecret = process.env.JWT_SECRET;
   if (!jwtSecret) {
     throw new Error("JWT_SECRET is required for auth routes");
@@ -31,8 +37,8 @@ export function createAuthRouter(prisma: PrismaClient): Router {
   const cookieName = process.env.AUTH_COOKIE_NAME ?? "access_token";
 
   const repository = new AuthRepository(prisma);
-  const service = new AuthService(repository, jwtSecret, jwtExpiresIn);
-  const controller = new AuthController(service, cookieName, resolveCookieOptions());
+  const authService = new AuthService(repository, jwtSecret, jwtExpiresIn);
+  const controller = new AuthController(authService, cookieName, resolveCookieOptions());
 
   const router = Router();
 
@@ -43,5 +49,5 @@ export function createAuthRouter(prisma: PrismaClient): Router {
 
   router.use(AuthController.handleError);
 
-  return router;
+  return { router, authService, cookieName };
 }
