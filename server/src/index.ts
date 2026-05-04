@@ -1,9 +1,11 @@
+import "dotenv/config";
 import "./types/express-augmentation";
 import cookieParser from "cookie-parser";
 import express, { type Express } from "express";
 import type { PrismaClient } from "../generated/prisma/client";
 import { PrismaClientSingleton } from "./db/prisma";
 import { createRootRouter } from "./routes/router";
+import { generateFlashcardsFromMaterialText } from "./helpers/flashcard-generation.helper";
 
 class Application {
   private readonly app: Express;
@@ -34,4 +36,5 @@ const port = Number(process.env.PORT) || 3000;
 const prisma = PrismaClientSingleton.getInstance().prisma;
 
 const app = new Application(prisma);
+
 app.listen(port);
