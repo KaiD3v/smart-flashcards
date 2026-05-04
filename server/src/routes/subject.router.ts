@@ -5,6 +5,7 @@ import type { AuthService } from "../auth/auth.service";
 import { SubjectController } from "../subject/subject.controller";
 import { SubjectRepository } from "../subject/subject.repository";
 import { SubjectService } from "../subject/subject.service";
+import { createFlashcardRouter } from "./flashcard.router";
 
 export function createSubjectRouter(
   prisma: PrismaClient,
@@ -23,6 +24,7 @@ export function createSubjectRouter(
 
   router.post("/", controller.create);
   router.get("/", controller.findAll);
+  router.use("/:id/flashcards", createFlashcardRouter(prisma, authService, authCookieName));
   router.get("/:id", controller.findById);
   router.patch("/:id", controller.update);
   router.delete("/:id", controller.delete);

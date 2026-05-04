@@ -5,7 +5,6 @@ import express, { type Express } from "express";
 import type { PrismaClient } from "../generated/prisma/client";
 import { PrismaClientSingleton } from "./db/prisma";
 import { createRootRouter } from "./routes/router";
-import { generateFlashcardsFromMaterialText } from "./helpers/flashcard-generation.helper";
 
 class Application {
   private readonly app: Express;
@@ -26,9 +25,11 @@ class Application {
   }
 
   listen(port: number): void {
-    this.app.listen(port, () => {
+    const server = this.app.listen(port, () => {
       console.log(`Servidor em http://localhost:${port}`);
     });
+    // Sem limite de inatividade no socket enquanto o handler aguarda o Ollama (resposta lenta).
+    server.setTimeout(0);
   }
 }
 

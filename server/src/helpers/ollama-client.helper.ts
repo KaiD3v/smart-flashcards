@@ -1,7 +1,29 @@
+import { Agent, fetch as undiciFetch } from "undici";
 import { Ollama, type Config } from "ollama";
 
 const DEFAULT_HOST = "http://127.0.0.1:11434";
 const DEFAULT_MODEL = "llama3.2";
+
+/** 24h — espera até cabeçalhos HTTP completos (o gargalo típico é o corpo, ver agente abaixo). */
+const OLLAMA_HEADERS_TIMEOUT_MS = 86_400_000;
+
+/**
+ * O `fetch` global do Node (Undici) corta o corpo ao fim de ~300s sem dados.
+ * O Ollama pode demorar muito sem enviar bytes até terminar a inferência; desativamos esse limite.
+ */
+const ollamaUndiciAgent = new Agent({
+  bodyTimeout: 0,
+  headersTimeout: OLLAMA_HEADERS_TIMEOUT_MS,
+  connectTimeout: 120_000,
+});
+
+function createOllamaUndiciFetch(): typeof fetch {
+  return ((input, init) =>
+    undiciFetch(input as never, {
+      ...(init as Record<string, unknown> | undefined),
+      dispatcher: ollamaUndiciAgent,
+    } as never)) as typeof fetch;
+}
 
 export function resolveOllamaHost(): string {
   const host = process.env.OLLAMA_HOST?.trim();
@@ -31,5 +53,6 @@ export function createOllamaClient(overrides?: Partial<Config>): Ollama {
     ...overrides,
     host,
     ...(headers !== undefined ? { headers } : {}),
+    fetch: overrides?.fetch ?? createOllamaUndiciFetch(),
   });
 }
