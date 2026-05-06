@@ -4,6 +4,7 @@ import { HttpError } from "../auth/auth.errors";
 import {
   createFlashcardBodySchema,
   generateFlashcardsBodySchema,
+  reviewFlashcardBodySchema,
   updateFlashcardBodySchema,
 } from "./flashcard.dto";
 import type { FlashcardService } from "./flashcard.service";
@@ -84,6 +85,29 @@ export class FlashcardController {
     }
   };
 
+  findNeedReviewBySubject = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const subjectId = subjectIdFromParentParams(req);
+      if (!subjectId) {
+        res.status(400).json({ message: "Subject id is required" });
+        return;
+      }
+
+      const ownerId = authUserId(req);
+      const flashcards = await this.flashcardService.findNeedReviewForUserBySubject(
+        subjectId,
+        ownerId
+      );
+      res.status(200).json({ flashcards });
+    } catch (error) {
+      next(error);
+    }
+  };
+
   update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const flashcardId = routeParamId(req, "flashcardId");
@@ -145,6 +169,35 @@ export class FlashcardController {
       const ownerId = authUserId(req);
       const result = await this.flashcardService.generateFromMaterial(subjectId, ownerId, parsed.data);
       res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  review = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const flashcardId = routeParamId(req, "flashcardId");
+      if (!flashcardId) {
+        res.status(400).json({ message: "Flashcard id is required" });
+        return;
+      }
+
+      const parsed = reviewFlashcardBodySchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          message: "Validation failed",
+          issues: parsed.error.issues,
+        });
+        return;
+      }
+
+      const ownerId = authUserId(req);
+      const flashcard = await this.flashcardService.reviewForUser(
+        flashcardId,
+        ownerId,
+        parsed.data
+      );
+      res.status(200).json({ flashcard });
     } catch (error) {
       next(error);
     }

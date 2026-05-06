@@ -5,6 +5,7 @@ import type { AuthService } from "../auth/auth.service";
 import { FlashcardController } from "../flashcard/flashcard.controller";
 import { FlashcardRepository } from "../flashcard/flashcard.repository";
 import { FlashcardService } from "../flashcard/flashcard.service";
+import { FsrsService } from "../helpers/fsrs";
 import { SubjectRepository } from "../subject/subject.repository";
 import { SubjectService } from "../subject/subject.service";
 
@@ -19,7 +20,12 @@ export function createFlashcardRouter(
   const flashcardRepository = new FlashcardRepository(prisma);
   const subjectRepository = new SubjectRepository(prisma);
   const subjectService = new SubjectService(subjectRepository);
-  const flashcardService = new FlashcardService(flashcardRepository, subjectService);
+  const fsrsService = new FsrsService();
+  const flashcardService = new FlashcardService(
+    flashcardRepository,
+    subjectService,
+    fsrsService
+  );
   const controller = new FlashcardController(flashcardService);
 
   const requireAuth = createRequireAuthMiddleware(authService, authCookieName);
@@ -29,9 +35,11 @@ export function createFlashcardRouter(
   router.use(requireAuth);
 
   router.get("/", controller.findAllBySubject);
+  router.get("/need-review", controller.findNeedReviewBySubject);
   router.post("/", controller.create);
   router.post("/generate", controller.generate);
   router.get("/:flashcardId", controller.findById);
+  router.post("/:flashcardId/review", controller.review);
   router.patch("/:flashcardId", controller.update);
   router.delete("/:flashcardId", controller.delete);
 

@@ -24,6 +24,14 @@ export const generateFlashcardsBodySchema = z.object({
   persist: z.boolean().optional(),
 });
 
+export const reviewFlashcardBodySchema = z.object({
+  rating: z
+    .enum(["again", "hard", "good", "easy"])
+    .or(z.enum(["Again", "Hard", "Good", "Easy"]))
+    .transform((rating) => rating.toLowerCase() as "again" | "hard" | "good" | "easy"),
+});
+
 export type CreateFlashcardBody = z.infer<typeof createFlashcardBodySchema>;
 export type UpdateFlashcardBody = z.infer<typeof updateFlashcardBodySchema>;
 export type GenerateFlashcardsBody = z.infer<typeof generateFlashcardsBodySchema>;
+export type ReviewFlashcardBody = z.infer<typeof reviewFlashcardBodySchema>;
