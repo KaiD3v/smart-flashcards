@@ -47,6 +47,22 @@ model Flashcard {
    * Ordem de exibição dentro da matéria (reordenação no UI).
    */
   order     Int      @default(0)
+  /**
+   * Estado do algoritmo FSRS (ts-fsrs) para agendamento de revisões.
+   *
+   * Observação: esses campos são opcionais para compatibilidade com flashcards
+   * já existentes. O helper inicializa quando necessário.
+   */
+  fsrsDueAt           DateTime?
+  fsrsLastReviewAt   DateTime?
+  fsrsState           Int?
+  fsrsStability       Float?
+  fsrsDifficulty      Float?
+  fsrsElapsedDays     Float?
+  fsrsScheduledDays   Float?
+  fsrsLearningSteps   Int?
+  fsrsReps            Int?
+  fsrsLapses         Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   subject   Subject  @relation(fields: [subjectId], references: [id], onDelete: Cascade)
