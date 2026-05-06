@@ -1,6 +1,6 @@
 > **English:** see [README.md](./README.md).
 
-# API StudyHub
+# API SmartFlashcards
 
 API REST da SmartFlashcards, focada em contas de utilizador, gestão de matérias e fluxo de revisão de flashcards com FSRS, incluindo geração assistida por IA.
 
@@ -94,8 +94,8 @@ sequenceDiagram
 
 1. **Clonar o repositório**
    ```bash
-   git clone https://github.com/your-org/studyhub.com.git
-   cd studyhub.com/server
+   git clone https://github.com/your-org/smartflashcards.com.git
+   cd smartflashcards.com/server
    ```
 
 2. **Instalar dependências**
@@ -140,7 +140,7 @@ sequenceDiagram
 |---|---|---|---|
 | `PORT` | Não | `3000` | Porta HTTP da aplicação. Valor padrão: `3000`. |
 | `NODE_ENV` | Não | `development` | Ambiente de execução. Em `production`, o cookie de auth é `secure`. |
-| `DATABASE_URL` | Sim | `postgresql://studyhub:secret@localhost:5432/studyhub` | String de conexão PostgreSQL usada pelo Prisma. |
+| `DATABASE_URL` | Sim | `postgresql://smartflashcards:secret@localhost:5432/smartflashcards` | String de conexão PostgreSQL usada pelo Prisma. |
 | `JWT_SECRET` | Sim | `4f5f95f7f4c3e8...` | Segredo usado para assinar/validar tokens JWT. |
 | `JWT_EXPIRES_IN` | Não | `7d` | Expiração do JWT no formato do `jsonwebtoken` (`7d`, `12h`, etc.). Padrão: `7d`. |
 | `AUTH_COOKIE_NAME` | Não | `access_token` | Nome do cookie de autenticação. Padrão: `access_token`. |
@@ -693,7 +693,7 @@ curl -X POST "http://localhost:3000/subjects" \
   -d '{
     "name": "Biologia Celular",
     "description": "Membrana plasmática, organelos e metabolismo.",
-    "imageUrl": "https://cdn.studyhub.com/subjects/cell-biology.png",
+    "imageUrl": "https://cdn.smartflashcards.com/subjects/cell-biology.png",
     "isActive": true
   }'
 ```
@@ -704,7 +704,7 @@ curl -X POST "http://localhost:3000/subjects" \
 {
   "name": "Biologia Celular",
   "description": "Membrana plasmática, organelos e metabolismo.",
-  "imageUrl": "https://cdn.studyhub.com/subjects/cell-biology.png",
+  "imageUrl": "https://cdn.smartflashcards.com/subjects/cell-biology.png",
   "isActive": true
 }
 ```
@@ -717,7 +717,7 @@ curl -X POST "http://localhost:3000/subjects" \
     "id": "ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5",
     "name": "Biologia Celular",
     "description": "Membrana plasmática, organelos e metabolismo.",
-    "imageUrl": "https://cdn.studyhub.com/subjects/cell-biology.png",
+    "imageUrl": "https://cdn.smartflashcards.com/subjects/cell-biology.png",
     "isActive": true,
     "createdAt": "2026-05-06T16:30:00.000Z",
     "updatedAt": "2026-05-06T16:30:00.000Z"
@@ -759,7 +759,7 @@ curl -X GET "http://localhost:3000/subjects" -b cookies.txt
       "id": "ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5",
       "name": "Biologia Celular",
       "description": "Membrana plasmática, organelos e metabolismo.",
-      "imageUrl": "https://cdn.studyhub.com/subjects/cell-biology.png",
+      "imageUrl": "https://cdn.smartflashcards.com/subjects/cell-biology.png",
       "isActive": true,
       "createdAt": "2026-05-06T16:30:00.000Z",
       "updatedAt": "2026-05-06T16:30:00.000Z"
@@ -800,7 +800,7 @@ curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5
     "id": "ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5",
     "name": "Biologia Celular",
     "description": "Membrana plasmática, organelos e metabolismo.",
-    "imageUrl": "https://cdn.studyhub.com/subjects/cell-biology.png",
+    "imageUrl": "https://cdn.smartflashcards.com/subjects/cell-biology.png",
     "isActive": true,
     "createdAt": "2026-05-06T16:30:00.000Z",
     "updatedAt": "2026-05-06T16:30:00.000Z"
@@ -851,7 +851,7 @@ curl -X PATCH "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4
     "id": "ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5",
     "name": "Biologia Celular",
     "description": "Inclui transporte pela membrana e sinalização celular.",
-    "imageUrl": "https://cdn.studyhub.com/subjects/cell-biology.png",
+    "imageUrl": "https://cdn.smartflashcards.com/subjects/cell-biology.png",
     "isActive": true,
     "createdAt": "2026-05-06T16:30:00.000Z",
     "updatedAt": "2026-05-06T16:45:00.000Z"
