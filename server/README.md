@@ -94,8 +94,8 @@ sequenceDiagram
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-org/smartflashcards.com.git
-   cd smartflashcards.com/server
+   git clone https://github.com/KaiD3v/smart-flashcards.git
+   cd smart-flashcards/server
    ```
 
 2. **Install dependencies**
