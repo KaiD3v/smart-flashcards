@@ -1,205 +1,205 @@
-> **Português:** ver [README.pt.md](./README.pt.md).
+> **English:** see [README.md](./README.md).
 
-# StudyHub API
+# API StudyHub
 
-REST API for SmartFlashcards, focused on user accounts, subject management, and FSRS-powered flashcard review workflows, including AI-assisted flashcard generation.
+API REST da SmartFlashcards, focada em contas de utilizador, gestão de matérias e fluxo de revisão de flashcards com FSRS, incluindo geração assistida por IA.
 
-## Table of Contents
+## Índice
 
-- [Overview](#overview)
-- [Architecture and Design Notes](#architecture-and-design-notes)
-- [Tech Stack](#tech-stack)
-- [Installation and Setup](#installation-and-setup)
-- [Environment Variables](#environment-variables)
-- [Running the Project](#running-the-project)
-- [Authentication](#authentication)
-- [API Endpoints](#api-endpoints)
+- [Visão Geral](#visão-geral)
+- [Arquitetura e Notas de Design](#arquitetura-e-notas-de-design)
+- [Stack Tecnológica](#stack-tecnológica)
+- [Instalação e Configuração](#instalação-e-configuração)
+- [Variáveis de Ambiente](#variáveis-de-ambiente)
+- [Execução do Projeto](#execução-do-projeto)
+- [Autenticação](#autenticação)
+- [Endpoints da API](#endpoints-da-api)
   - [Health](#health)
   - [Auth](#auth)
   - [Users](#users)
   - [Subjects](#subjects)
-  - [Flashcards (Nested Under Subjects)](#flashcards-nested-under-subjects)
-- [Error Handling](#error-handling)
-- [Rate Limiting and Throttling](#rate-limiting-and-throttling)
-- [Logging and Monitoring](#logging-and-monitoring)
-- [Testing](#testing)
-- [Deployment](#deployment)
-- [Security Considerations](#security-considerations)
-- [Versioning Strategy](#versioning-strategy)
-- [Contributing Guidelines](#contributing-guidelines)
-- [License](#license)
+  - [Flashcards (Aninhados em Subjects)](#flashcards-aninhados-em-subjects)
+- [Tratamento de Erros](#tratamento-de-erros)
+- [Rate Limiting e Throttling](#rate-limiting-e-throttling)
+- [Logs e Monitorização](#logs-e-monitorização)
+- [Testes](#testes)
+- [Deploy](#deploy)
+- [Considerações de Segurança](#considerações-de-segurança)
+- [Estratégia de Versionamento](#estratégia-de-versionamento)
+- [Diretrizes de Contribuição](#diretrizes-de-contribuição)
+- [Licença](#licença)
 
-## Overview
+## Visão Geral
 
-The SmartFlashcards API addresses the core problem of organizing study content and prioritizing reviews intelligently:
+A API SmartFlashcards resolve o problema central de organizar conteúdo de estudo e priorizar revisões de forma inteligente:
 
-- **User management** with registration, login, profile lookup, and profile updates.
-- **Subject-scoped content** so each authenticated user only accesses their own data.
-- **Flashcard lifecycle** with create/list/update/delete operations.
-- **FSRS scheduling** (`ts-fsrs`) to compute the next interval based on `again|hard|good|easy`.
-- **AI flashcard generation** via Ollama from raw text, with optional persistence.
+- **Gestão de utilizadores** com registo, login, consulta e atualização de perfil.
+- **Conteúdo por matéria** para garantir que cada utilizador autenticado acede apenas aos seus próprios dados.
+- **Ciclo de vida de flashcards** com operações de criar/listar/editar/apagar.
+- **Agendamento FSRS** (`ts-fsrs`) para cálculo do próximo intervalo com base em `again|hard|good|easy`.
+- **Geração de flashcards com IA** via Ollama a partir de texto, com persistência opcional.
 
-This API is designed for web and mobile clients that use `HttpOnly` cookie-based authentication with JWT on the server.
+Esta API foi desenhada para clientes web e mobile que usam autenticação baseada em cookie `HttpOnly`, com JWT no backend.
 
-## Architecture and Design Notes
+## Arquitetura e Notas de Design
 
-- **Layered structure**:
-  - `routes/*` -> route and middleware composition
-  - `*.controller.ts` -> HTTP validation and response formatting
-  - `*.service.ts` -> business rules and authorization
-  - `*.repository.ts` -> data access with Prisma
-- **Database**: PostgreSQL with Prisma and `@prisma/adapter-pg`.
-- **Authentication model**:
-  - JWT is issued by the server and stored in an `HttpOnly` cookie.
-  - Protected routes validate the token from the cookie.
-- **Ownership constraints**:
-  - Subject and flashcard operations are always limited to the authenticated owner.
-  - Profile updates/deletes are only allowed for the account owner.
-- **FSRS integration**:
-  - Flashcards store scheduling fields (`due`, `stability`, `difficulty`, `reps`, `lapses`, `state`).
-  - `POST /subjects/:id/flashcards/:flashcardId/review` updates memory state.
+- **Estrutura em camadas**:
+  - `routes/*` -> composição de rotas e middlewares
+  - `*.controller.ts` -> validação HTTP e formatação de resposta
+  - `*.service.ts` -> regras de negócio e autorização
+  - `*.repository.ts` -> acesso a dados com Prisma
+- **Base de dados**: PostgreSQL com Prisma e `@prisma/adapter-pg`.
+- **Modelo de autenticação**:
+  - JWT é gerado no servidor e guardado em cookie `HttpOnly`.
+  - Rotas protegidas validam o token presente no cookie.
+- **Restrições de ownership**:
+  - Operações de matérias e flashcards são sempre limitadas ao dono autenticado.
+  - Alteração/apagamento de perfil é permitido apenas ao próprio utilizador.
+- **Integração FSRS**:
+  - Flashcards armazenam campos de agendamento (`due`, `stability`, `difficulty`, `reps`, `lapses`, `state`).
+  - `POST /subjects/:id/flashcards/:flashcardId/review` atualiza estado de memória.
 
-### Review flow (Mermaid)
+### Fluxo de revisão (Mermaid)
 
 ```mermaid
 sequenceDiagram
-  participant C as Client
-  participant API as SmartFlashcards API
+  participant C as Cliente
+  participant API as API SmartFlashcards
   participant DB as PostgreSQL
   participant FSRS as ts-fsrs
 
   C->>API: POST /subjects/:id/flashcards/:flashcardId/review {rating}
-  API->>DB: Read flashcard + validate ownership
-  DB-->>API: Current card state
-  API->>FSRS: Compute next state from rating
+  API->>DB: Lê flashcard + valida ownership
+  DB-->>API: Estado atual do card
+  API->>FSRS: Calcula próximo estado pelo rating
   FSRS-->>API: Novo due/stability/difficulty/reps/lapses/state
-  API->>DB: Persist review state
-  DB-->>API: Updated flashcard
+  API->>DB: Persiste estado da revisão
+  DB-->>API: Flashcard atualizado
   API-->>C: 200 { flashcard }
 ```
 
-## Tech Stack
+## Stack Tecnológica
 
 - **Runtime**: Node.js (TypeScript, ESM)
-- **HTTP framework**: Express 5
-- **Validation**: Zod
-- **Database**: PostgreSQL
+- **Framework HTTP**: Express 5
+- **Validação**: Zod
+- **Base de dados**: PostgreSQL
 - **ORM**: Prisma
-- **Authentication**: JWT (`jsonwebtoken`) + `HttpOnly` cookie
-- **Password hashing**: bcrypt
-- **AI integration**: Ollama (flashcard generation)
-- **Spaced repetition**: `ts-fsrs`
+- **Autenticação**: JWT (`jsonwebtoken`) + cookie `HttpOnly`
+- **Hash de password**: bcrypt
+- **Integração de IA**: Ollama (geração de flashcards)
+- **Repetição espaçada**: `ts-fsrs`
 
-## Installation and Setup
+## Instalação e Configuração
 
-1. **Clone the repository**
+1. **Clonar o repositório**
    ```bash
    git clone https://github.com/your-org/studyhub.com.git
    cd studyhub.com/server
    ```
 
-2. **Install dependencies**
+2. **Instalar dependências**
    ```bash
    npm install
    ```
 
-3. **Create environment file**
+3. **Criar ficheiro de ambiente**
    ```bash
    cp .env.example .env
    ```
-   If `.env.example` is missing, create `.env` manually using the variables documented here.
+   Se não existir `.env.example`, crie `.env` manualmente com as variáveis desta documentação.
 
-4. **Configure database and JWT secret**
-   - Set `DATABASE_URL` to your PostgreSQL connection string.
-   - Set a strong `JWT_SECRET` (recommended: at least 32 random bytes).
+4. **Configurar base de dados e segredo JWT**
+   - Defina `DATABASE_URL` com a string de conexão PostgreSQL.
+   - Defina `JWT_SECRET` forte (mínimo recomendado: 32 bytes aleatórios).
 
-5. **Generate Prisma client**
+5. **Gerar cliente Prisma**
    ```bash
    npm run prisma:generate
    ```
 
-6. **Apply schema to the database**
-   Choose one:
-   - Migrations (recommended for schema history):
+6. **Aplicar schema na base de dados**
+   Escolha uma opção:
+   - Migrações (recomendado para histórico de alterações):
      ```bash
      npm run prisma:migrate
      ```
-   - Direct schema push (fast local setup):
+   - Push direto do schema (setup local rápido):
      ```bash
      npm run prisma:push
      ```
 
-7. **Start the API**
+7. **Iniciar API**
    ```bash
    npm run dev
    ```
 
-## Environment Variables
+## Variáveis de Ambiente
 
-| Variable | Required | Example | Description |
+| Variável | Obrigatória | Exemplo | Descrição |
 |---|---|---|---|
-| `PORT` | No | `3000` | HTTP port. Default: `3000`. |
-| `NODE_ENV` | No | `development` | Runtime mode. In `production`, auth cookies are `secure`. |
-| `DATABASE_URL` | Yes | `postgresql://studyhub:secret@localhost:5432/studyhub` | PostgreSQL connection string used by Prisma. |
-| `JWT_SECRET` | Yes | `4f5f95f7f4c3e8...` | Secret used to sign/verify JWTs. |
-| `JWT_EXPIRES_IN` | No | `7d` | JWT expiry in `jsonwebtoken` format (`7d`, `12h`, etc.). Default: `7d`. |
-| `AUTH_COOKIE_NAME` | No | `access_token` | Authentication cookie name. Default: `access_token`. |
-| `JWT_COOKIE_MAX_AGE_MS` | No | `604800000` | Cookie lifetime in milliseconds. Default: 7 days. |
-| `OLLAMA_HOST` | No | `http://127.0.0.1:11434` | Ollama server base URL. |
-| `OLLAMA_MODEL` | No | `llama3.2` | Default model for flashcard generation. |
-| `OLLAMA_API_KEY` | No | `sk-local-ollama-key` | Optional Bearer token sent to Ollama. |
+| `PORT` | Não | `3000` | Porta HTTP da aplicação. Valor padrão: `3000`. |
+| `NODE_ENV` | Não | `development` | Ambiente de execução. Em `production`, o cookie de auth é `secure`. |
+| `DATABASE_URL` | Sim | `postgresql://studyhub:secret@localhost:5432/studyhub` | String de conexão PostgreSQL usada pelo Prisma. |
+| `JWT_SECRET` | Sim | `4f5f95f7f4c3e8...` | Segredo usado para assinar/validar tokens JWT. |
+| `JWT_EXPIRES_IN` | Não | `7d` | Expiração do JWT no formato do `jsonwebtoken` (`7d`, `12h`, etc.). Padrão: `7d`. |
+| `AUTH_COOKIE_NAME` | Não | `access_token` | Nome do cookie de autenticação. Padrão: `access_token`. |
+| `JWT_COOKIE_MAX_AGE_MS` | Não | `604800000` | Vida útil do cookie em milissegundos. Padrão: 7 dias. |
+| `OLLAMA_HOST` | Não | `http://127.0.0.1:11434` | URL base do servidor Ollama. |
+| `OLLAMA_MODEL` | Não | `llama3.2` | Modelo padrão usado na geração de flashcards. |
+| `OLLAMA_API_KEY` | Não | `sk-local-ollama-key` | Token Bearer opcional enviado para o Ollama. |
 
-## Running the Project
+## Execução do Projeto
 
-### Local development
+### Desenvolvimento local
 
 ```bash
 npm run dev
 ```
 
 - Usa `tsx watch src/index.ts`.
-- API listens on `http://localhost:${PORT}`.
+- API sobe em `http://localhost:${PORT}`.
 
-### Type-check / build verification
+### Verificação de build/tipos
 
 ```bash
 npm run build
 ```
 
-- Runs the TypeScript compiler in `noEmit` mode.
+- Executa o TypeScript em modo `noEmit`.
 
-### Production-style run
+### Execução em modo produção
 
 ```bash
 npm start
 ```
 
-- Runs `tsx src/index.ts` (no watch).
-- Ensure `NODE_ENV=production`, `DATABASE_URL`, and `JWT_SECRET` are set.
+- Executa `tsx src/index.ts` (sem watch).
+- Garanta `NODE_ENV=production`, `DATABASE_URL` e `JWT_SECRET`.
 
-## Authentication
+## Autenticação
 
-The API uses **JWT in an `HttpOnly` cookie**:
+A API usa **JWT em cookie `HttpOnly`**:
 
-- `register` and `login` return the user object and set the cookie (`AUTH_COOKIE_NAME`, default `access_token`).
-- Protected routes require this cookie.
-- Cookie properties:
+- `register` e `login` devolvem o utilizador e definem cookie (`AUTH_COOKIE_NAME`, padrão `access_token`).
+- Rotas protegidas exigem este cookie.
+- Propriedades do cookie:
   - `httpOnly: true`
   - `sameSite: "lax"`
-  - `secure: true` only when `NODE_ENV=production`
+  - `secure: true` apenas em `NODE_ENV=production`
 
-### Authentication flow
+### Fluxo de autenticação
 
 1. `POST /auth/register` ou `POST /auth/login`
-2. Client stores the returned cookie
-3. Subsequent requests include the cookie
-4. `GET /auth/me` returns the currently authenticated user
-5. `POST /auth/logout` clears the cookie
+2. Cliente guarda o cookie retornado
+3. Requisições seguintes enviam o cookie
+4. `GET /auth/me` devolve o utilizador autenticado atual
+5. `POST /auth/logout` limpa o cookie
 
-### Example (cookie jar with curl)
+### Exemplo (cookie jar com curl)
 
 ```bash
-# Log in and store cookies
+# Faz login e guarda cookie
 curl -i -X POST "http://localhost:3000/auth/login" \
   -H "Content-Type: application/json" \
   -c cookies.txt \
@@ -208,11 +208,11 @@ curl -i -X POST "http://localhost:3000/auth/login" \
     "password": "StrongPassw0rd!"
   }'
 
-# Call protected endpoint with stored cookie
+# Chama endpoint protegido com cookie guardado
 curl -i "http://localhost:3000/subjects" -b cookies.txt
 ```
 
-## API Endpoints
+## Endpoints da API
 
 Base URL (local): `http://localhost:3000`
 
@@ -222,10 +222,10 @@ Base URL (local): `http://localhost:3000`
 
 ### `GET /health`
 
-- **Description**: API liveness probe.
-- **Auth**: not required.
+- **Descrição**: verifica disponibilidade da API.
+- **Auth**: não requer autenticação.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X GET "http://localhost:3000/health"
@@ -237,7 +237,7 @@ curl -X GET "http://localhost:3000/health"
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -247,16 +247,16 @@ curl -X GET "http://localhost:3000/health"
 
 #### Status codes
 
-- `200` - healthy
+- `200` - serviço saudável
 
 ---
 
 ### `GET /db-health`
 
-- **Description**: database connectivity probe (`SELECT 1`).
-- **Auth**: not required.
+- **Descrição**: verifica conectividade com a base de dados (`SELECT 1`).
+- **Auth**: não requer autenticação.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X GET "http://localhost:3000/db-health"
@@ -268,7 +268,7 @@ curl -X GET "http://localhost:3000/db-health"
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -278,8 +278,8 @@ curl -X GET "http://localhost:3000/db-health"
 
 #### Status codes
 
-- `200` - database connected
-- `503` - database unavailable
+- `200` - base de dados conectada
+- `503` - base de dados indisponível
 
 ---
 
@@ -287,10 +287,10 @@ curl -X GET "http://localhost:3000/db-health"
 
 ### `POST /auth/register`
 
-- **Description**: creates a user and starts an authenticated session.
-- **Auth**: not required.
+- **Descrição**: cria utilizador e inicia sessão autenticada.
+- **Auth**: não requer autenticação.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -i -X POST "http://localhost:3000/auth/register" \
@@ -315,7 +315,7 @@ curl -i -X POST "http://localhost:3000/auth/register" \
 }
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -332,18 +332,18 @@ curl -i -X POST "http://localhost:3000/auth/register" \
 
 #### Status codes
 
-- `201` - registration successful
-- `400` - validation error
-- `409` - email or nickname already taken
+- `201` - registo concluído
+- `400` - erro de validação
+- `409` - email ou nickname já existe
 
 ---
 
 ### `POST /auth/login`
 
-- **Description**: authenticates the user and sets the access cookie.
-- **Auth**: not required.
+- **Descrição**: autentica utilizador e define cookie de acesso.
+- **Auth**: não requer autenticação.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -i -X POST "http://localhost:3000/auth/login" \
@@ -364,7 +364,7 @@ curl -i -X POST "http://localhost:3000/auth/login" \
 }
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -382,17 +382,17 @@ curl -i -X POST "http://localhost:3000/auth/login" \
 #### Status codes
 
 - `200` - autenticado
-- `400` - validation error
-- `401` - invalid credentials
+- `400` - erro de validação
+- `401` - credenciais inválidas
 
 ---
 
 ### `POST /auth/logout`
 
-- **Description**: clears the authentication cookie.
-- **Auth**: not required (safe to call without an active session).
+- **Descrição**: limpa cookie de autenticação.
+- **Auth**: não obrigatória (pode ser chamada sem sessão ativa).
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -i -X POST "http://localhost:3000/auth/logout" -b cookies.txt
@@ -404,7 +404,7 @@ curl -i -X POST "http://localhost:3000/auth/logout" -b cookies.txt
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {}
@@ -412,16 +412,16 @@ curl -i -X POST "http://localhost:3000/auth/logout" -b cookies.txt
 
 #### Status codes
 
-- `204` - logged out
+- `204` - logout efetuado
 
 ---
 
 ### `GET /auth/me`
 
-- **Description**: returns the authenticated user from the cookie.
-- **Auth**: required.
+- **Descrição**: retorna utilizador autenticado com base no cookie.
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X GET "http://localhost:3000/auth/me" -b cookies.txt
@@ -433,7 +433,7 @@ curl -X GET "http://localhost:3000/auth/me" -b cookies.txt
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -450,8 +450,8 @@ curl -X GET "http://localhost:3000/auth/me" -b cookies.txt
 
 #### Status codes
 
-- `200` - authenticated user returned
-- `401` - not authenticated / invalid or expired token
+- `200` - utilizador autenticado retornado
+- `401` - não autenticado / token inválido ou expirado
 
 ---
 
@@ -459,10 +459,10 @@ curl -X GET "http://localhost:3000/auth/me" -b cookies.txt
 
 ### `POST /users`
 
-- **Description**: creates a user (does not establish a session).
-- **Auth**: not required.
+- **Descrição**: cria utilizador (endpoint sem criação de sessão).
+- **Auth**: não obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X POST "http://localhost:3000/users" \
@@ -486,7 +486,7 @@ curl -X POST "http://localhost:3000/users" \
 }
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -503,18 +503,18 @@ curl -X POST "http://localhost:3000/users" \
 
 #### Status codes
 
-- `201` - user created
-- `400` - validation error
-- `409` - email or nickname conflict
+- `201` - utilizador criado
+- `400` - erro de validação
+- `409` - conflito de email ou nickname
 
 ---
 
 ### `GET /users`
 
-- **Description**: lists users.
-- **Auth**: not required.
+- **Descrição**: lista utilizadores.
+- **Auth**: não obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X GET "http://localhost:3000/users"
@@ -526,7 +526,7 @@ curl -X GET "http://localhost:3000/users"
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -545,16 +545,16 @@ curl -X GET "http://localhost:3000/users"
 
 #### Status codes
 
-- `200` - list returned
+- `200` - lista retornada
 
 ---
 
 ### `GET /users/:id`
 
-- **Description**: gets a user by id.
-- **Auth**: not required.
+- **Descrição**: obtém utilizador por id.
+- **Auth**: não obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X GET "http://localhost:3000/users/4f217870-8d72-4acd-b0c8-85e373d5dca1"
@@ -566,7 +566,7 @@ curl -X GET "http://localhost:3000/users/4f217870-8d72-4acd-b0c8-85e373d5dca1"
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -583,18 +583,18 @@ curl -X GET "http://localhost:3000/users/4f217870-8d72-4acd-b0c8-85e373d5dca1"
 
 #### Status codes
 
-- `200` - user returned
-- `400` - missing id
-- `404` - user not found
+- `200` - utilizador retornado
+- `400` - id em falta
+- `404` - utilizador não encontrado
 
 ---
 
 ### `PATCH /users/:id`
 
-- **Description**: updates the authenticated user's profile (`:id` must match the session user).
-- **Auth**: required.
+- **Descrição**: atualiza perfil do utilizador autenticado (`:id` deve coincidir com o utilizador da sessão).
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X PATCH "http://localhost:3000/users/4f217870-8d72-4acd-b0c8-85e373d5dca1" \
@@ -615,7 +615,7 @@ curl -X PATCH "http://localhost:3000/users/4f217870-8d72-4acd-b0c8-85e373d5dca1"
 }
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -632,21 +632,21 @@ curl -X PATCH "http://localhost:3000/users/4f217870-8d72-4acd-b0c8-85e373d5dca1"
 
 #### Status codes
 
-- `200` - profile updated
-- `400` - validation failed / missing id
-- `401` - not authenticated
-- `403` - cannot modify another user's profile
-- `404` - user not found
-- `409` - email/nickname conflict
+- `200` - perfil atualizado
+- `400` - validação falhou / id em falta
+- `401` - não autenticado
+- `403` - tentativa de alterar perfil de outro utilizador
+- `404` - utilizador não encontrado
+- `409` - conflito de email/nickname
 
 ---
 
 ### `DELETE /users/:id`
 
-- **Description**: deletes the authenticated user's profile (`:id` must match the session).
-- **Auth**: required.
+- **Descrição**: remove perfil do utilizador autenticado (`:id` deve coincidir com a sessão).
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -i -X DELETE "http://localhost:3000/users/4f217870-8d72-4acd-b0c8-85e373d5dca1" \
@@ -659,7 +659,7 @@ curl -i -X DELETE "http://localhost:3000/users/4f217870-8d72-4acd-b0c8-85e373d5d
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {}
@@ -667,24 +667,24 @@ curl -i -X DELETE "http://localhost:3000/users/4f217870-8d72-4acd-b0c8-85e373d5d
 
 #### Status codes
 
-- `204` - user deleted
-- `400` - missing id
-- `401` - not authenticated
-- `403` - cannot delete another user's profile
-- `404` - user not found
+- `204` - utilizador removido
+- `400` - id em falta
+- `401` - não autenticado
+- `403` - tentativa de remover perfil de outro utilizador
+- `404` - utilizador não encontrado
 
 ---
 
 ## Subjects
 
-> All subject endpoints require authentication.
+> Todos os endpoints de matérias exigem autenticação.
 
 ### `POST /subjects`
 
-- **Description**: creates a subject for the authenticated user.
-- **Auth**: required.
+- **Descrição**: cria matéria do utilizador autenticado.
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X POST "http://localhost:3000/subjects" \
@@ -709,7 +709,7 @@ curl -X POST "http://localhost:3000/subjects" \
 }
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -727,18 +727,18 @@ curl -X POST "http://localhost:3000/subjects" \
 
 #### Status codes
 
-- `201` - subject created
-- `400` - validation error
-- `401` - not authenticated
+- `201` - matéria criada
+- `400` - erro de validação
+- `401` - não autenticado
 
 ---
 
 ### `GET /subjects`
 
-- **Description**: lists subjects for the authenticated user.
-- **Auth**: required.
+- **Descrição**: lista matérias do utilizador autenticado.
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X GET "http://localhost:3000/subjects" -b cookies.txt
@@ -750,7 +750,7 @@ curl -X GET "http://localhost:3000/subjects" -b cookies.txt
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -770,17 +770,17 @@ curl -X GET "http://localhost:3000/subjects" -b cookies.txt
 
 #### Status codes
 
-- `200` - subjects returned
-- `401` - not authenticated
+- `200` - matérias retornadas
+- `401` - não autenticado
 
 ---
 
 ### `GET /subjects/:id`
 
-- **Description**: gets a subject by id (only if owned by the authenticated user).
-- **Auth**: required.
+- **Descrição**: obtém matéria por id (apenas se pertencer ao utilizador autenticado).
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5" -b cookies.txt
@@ -792,7 +792,7 @@ curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -810,19 +810,19 @@ curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5
 
 #### Status codes
 
-- `200` - subject returned
-- `400` - missing id
-- `401` - not authenticated
-- `404` - subject not found or not permitted
+- `200` - matéria retornada
+- `400` - id em falta
+- `401` - não autenticado
+- `404` - matéria não encontrada ou sem permissão
 
 ---
 
 ### `PATCH /subjects/:id`
 
-- **Description**: updates a subject owned by the authenticated user.
-- **Auth**: required.
+- **Descrição**: atualiza matéria do utilizador autenticado.
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X PATCH "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5" \
@@ -843,7 +843,7 @@ curl -X PATCH "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4
 }
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -861,19 +861,19 @@ curl -X PATCH "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4
 
 #### Status codes
 
-- `200` - subject updated
-- `400` - validation error / id em falta
-- `401` - not authenticated
-- `404` - subject not found or not permitted
+- `200` - matéria atualizada
+- `400` - erro de validação / id em falta
+- `401` - não autenticado
+- `404` - matéria não encontrada ou sem permissão
 
 ---
 
 ### `DELETE /subjects/:id`
 
-- **Description**: deletes a subject (cascades flashcards).
-- **Auth**: required.
+- **Descrição**: remove matéria (com cascade dos flashcards).
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -i -X DELETE "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5" -b cookies.txt
@@ -885,7 +885,7 @@ curl -i -X DELETE "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be8
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {}
@@ -893,24 +893,24 @@ curl -i -X DELETE "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be8
 
 #### Status codes
 
-- `204` - subject deleted
-- `400` - missing id
-- `401` - not authenticated
-- `404` - subject not found or not permitted
+- `204` - matéria removida
+- `400` - id em falta
+- `401` - não autenticado
+- `404` - matéria não encontrada ou sem permissão
 
 ---
 
-## Flashcards (Nested Under Subjects)
+## Flashcards (Aninhados em Subjects)
 
-> All flashcard endpoints require authentication under:
+> Todos os endpoints de flashcards exigem autenticação e estão sob:
 > `/subjects/:id/flashcards`
 
 ### `GET /subjects/:id/flashcards`
 
-- **Description**: lists all flashcards in the subject.
-- **Auth**: required.
+- **Descrição**: lista todos os flashcards da matéria.
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5/flashcards" -b cookies.txt
@@ -922,7 +922,7 @@ curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -949,19 +949,19 @@ curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5
 
 #### Status codes
 
-- `200` - flashcards returned
-- `400` - missing subject id
-- `401` - not authenticated
-- `404` - subject not found or not permitted
+- `200` - flashcards retornados
+- `400` - id da matéria em falta
+- `401` - não autenticado
+- `404` - matéria não encontrada ou sem permissão
 
 ---
 
 ### `GET /subjects/:id/flashcards/need-review`
 
-- **Description**: returns flashcards with `due <= now`, ordered by `due` ascending.
-- **Auth**: required.
+- **Descrição**: retorna flashcards com `due <= now`, ordenados por `due` ascendente.
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5/flashcards/need-review" -b cookies.txt
@@ -973,7 +973,7 @@ curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -1000,19 +1000,19 @@ curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5
 
 #### Status codes
 
-- `200` - due cards returned
-- `400` - missing subject id
-- `401` - not authenticated
-- `404` - subject not found or not permitted
+- `200` - cards em revisão retornados
+- `400` - id da matéria em falta
+- `401` - não autenticado
+- `404` - matéria não encontrada ou sem permissão
 
 ---
 
 ### `POST /subjects/:id/flashcards`
 
-- **Description**: creates a flashcard in a subject.
-- **Auth**: required.
+- **Descrição**: cria flashcard numa matéria.
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X POST "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5/flashcards" \
@@ -1035,7 +1035,7 @@ curl -X POST "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f
 }
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -1060,19 +1060,19 @@ curl -X POST "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f
 
 #### Status codes
 
-- `201` - flashcard created
-- `400` - validation error / missing subject id
-- `401` - not authenticated
-- `404` - subject not found or not permitted
+- `201` - flashcard criado
+- `400` - erro de validação / id da matéria em falta
+- `401` - não autenticado
+- `404` - matéria não encontrada ou sem permissão
 
 ---
 
 ### `POST /subjects/:id/flashcards/generate`
 
-- **Description**: generates flashcards from text via Ollama. Can persist into the subject.
-- **Auth**: required.
+- **Descrição**: gera flashcards com Ollama a partir de texto. Pode persistir na matéria.
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X POST "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5/flashcards/generate" \
@@ -1097,7 +1097,7 @@ curl -X POST "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f
 }
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -1123,7 +1123,7 @@ curl -X POST "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f
 }
 ```
 
-If `persist=false` (or omitted), the response shape is:
+Se `persist=false` (ou omitido), o formato é:
 
 ```json
 {
@@ -1139,20 +1139,20 @@ If `persist=false` (or omitted), the response shape is:
 
 #### Status codes
 
-- `200` - generation completed
-- `400` - validation error / missing subject id
-- `401` - not authenticated
-- `404` - subject not found or not permitted
-- `502` - AI generation failed
+- `200` - geração concluída
+- `400` - erro de validação / id da matéria em falta
+- `401` - não autenticado
+- `404` - matéria não encontrada ou sem permissão
+- `502` - falha de geração por IA
 
 ---
 
 ### `GET /subjects/:id/flashcards/:flashcardId`
 
-- **Description**: gets a flashcard by id (must belong to the authenticated user).
-- **Auth**: required.
+- **Descrição**: obtém flashcard por id (desde que pertença ao utilizador autenticado).
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5/flashcards/4d7b6876-d793-4b17-9b6b-8569f58770b8" \
@@ -1165,7 +1165,7 @@ curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -1190,19 +1190,19 @@ curl -X GET "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5
 
 #### Status codes
 
-- `200` - flashcard returned
-- `400` - missing flashcard id
-- `401` - not authenticated
-- `404` - flashcard not found or not permitted
+- `200` - flashcard retornado
+- `400` - id do flashcard em falta
+- `401` - não autenticado
+- `404` - flashcard não encontrado ou sem permissão
 
 ---
 
 ### `POST /subjects/:id/flashcards/:flashcardId/review`
 
-- **Description**: applies an FSRS review update to the flashcard.
-- **Auth**: required.
+- **Descrição**: aplica revisão FSRS ao flashcard.
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X POST "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5/flashcards/4d7b6876-d793-4b17-9b6b-8569f58770b8/review" \
@@ -1221,14 +1221,14 @@ curl -X POST "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f
 }
 ```
 
-Valid values:
+Valores válidos:
 
 - `again`
 - `hard`
 - `good`
 - `easy`
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -1253,19 +1253,19 @@ Valid values:
 
 #### Status codes
 
-- `200` - review applied
-- `400` - validation failed / missing id
-- `401` - not authenticated
-- `404` - flashcard not found or not permitted
+- `200` - revisão aplicada
+- `400` - validação falhou / id em falta
+- `401` - não autenticado
+- `404` - flashcard não encontrado ou sem permissão
 
 ---
 
 ### `PATCH /subjects/:id/flashcards/:flashcardId`
 
-- **Description**: updates flashcard fields (`front`, `back`, `order`).
-- **Auth**: required.
+- **Descrição**: atualiza campos do flashcard (`front`, `back`, `order`).
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -X PATCH "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5/flashcards/4d7b6876-d793-4b17-9b6b-8569f58770b8" \
@@ -1284,7 +1284,7 @@ curl -X PATCH "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4
 }
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {
@@ -1309,19 +1309,19 @@ curl -X PATCH "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4
 
 #### Status codes
 
-- `200` - flashcard updated
-- `400` - validation failed / missing id
-- `401` - not authenticated
-- `404` - flashcard not found or not permitted
+- `200` - flashcard atualizado
+- `400` - validação falhou / id em falta
+- `401` - não autenticado
+- `404` - flashcard não encontrado ou sem permissão
 
 ---
 
 ### `DELETE /subjects/:id/flashcards/:flashcardId`
 
-- **Description**: deletes a flashcard.
-- **Auth**: required.
+- **Descrição**: remove flashcard.
+- **Auth**: obrigatória.
 
-#### Example request (curl)
+#### Exemplo de request (curl)
 
 ```bash
 curl -i -X DELETE "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5/flashcards/4d7b6876-d793-4b17-9b6b-8569f58770b8" \
@@ -1334,7 +1334,7 @@ curl -i -X DELETE "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be8
 {}
 ```
 
-#### Example response (JSON)
+#### Exemplo de response (JSON)
 
 ```json
 {}
@@ -1342,16 +1342,16 @@ curl -i -X DELETE "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be8
 
 #### Status codes
 
-- `204` - flashcard deleted
-- `400` - missing flashcard id
-- `401` - not authenticated
-- `404` - flashcard not found or not permitted
+- `204` - flashcard removido
+- `400` - id do flashcard em falta
+- `401` - não autenticado
+- `404` - flashcard não encontrado ou sem permissão
 
-## Error Handling
+## Tratamento de Erros
 
-### Standard error formats
+### Formatos padrão de erro
 
-- **Validation errors** (Zod):
+- **Erros de validação** (Zod):
   ```json
   {
     "message": "Validation failed",
@@ -1363,13 +1363,13 @@ curl -i -X DELETE "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be8
     ]
   }
   ```
-- **Domain/authorization errors** (`HttpError`):
+- **Erros de domínio/autorização** (`HttpError`):
   ```json
   {
     "message": "Not authenticated"
   }
   ```
-  May include details:
+  Pode incluir detalhes:
   ```json
   {
     "message": "Conflict",
@@ -1379,98 +1379,98 @@ curl -i -X DELETE "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be8
   }
   ```
 
-### Common status codes
+### Status codes mais comuns
 
-- `400` - validation failed or missing required parameter
-- `401` - not authenticated / token inválido
-- `403` - authenticated but forbidden
-- `404` - resource not found
-- `409` - uniqueness conflict (email/nickname)
-- `502` - upstream AI generation failure
-- `503` - database unavailable (`/db-health`)
+- `400` - validação falhou ou parâmetro obrigatório em falta
+- `401` - não autenticado / token inválido
+- `403` - autenticado sem permissão para ação
+- `404` - recurso não encontrado
+- `409` - conflito de unicidade (email/nickname)
+- `502` - falha upstream de geração com IA
+- `503` - base de dados indisponível (`/db-health`)
 
-## Rate Limiting and Throttling
+## Rate Limiting e Throttling
 
-No rate limiter is currently configured in this API.
+Atualmente não há rate limiter aplicado na API.
 
-Production recommendation:
+Recomendação para produção:
 
-- apply per-IP and per-user limits at the gateway/API gateway;
-- use stricter limits for `POST /auth/login` and `POST /subjects/:id/flashcards/generate`.
+- aplicar limites por IP e por utilizador no gateway/API gateway;
+- usar limites mais restritivos em `POST /auth/login` e `POST /subjects/:id/flashcards/generate`.
 
-## Logging and Monitoring
+## Logs e Monitorização
 
-Current state:
+Estado atual:
 
-- basic startup logging to stdout;
-- `db-health` failures are printed to stderr.
+- log básico de arranque no stdout;
+- falhas de `db-health` são impressas no stderr.
 
-Production recommendation:
+Recomendação para produção:
 
-- use structured JSON logs with correlation/request IDs;
-- collect latency metrics for auth, DB, and flashcard generation;
-- track `4xx/5xx` error rates, especially `401`, `409`, and `502`.
+- usar logs estruturados em JSON com correlation/request id;
+- recolher métricas de latência para auth, DB e geração de flashcards;
+- acompanhar taxa de erros `4xx/5xx`, com foco em `401`, `409` e `502`.
 
-## Testing
+## Testes
 
-The current `test` script in `package.json` is a placeholder and does not run an automated suite.
+O script `test` atual em `package.json` é placeholder e não executa suite automatizada.
 
 ```bash
 npm test
 ```
 
-Recommended next step:
+Próximo passo recomendado:
 
-- add integration tests for authentication, subject ownership, and FSRS review.
+- adicionar testes de integração para autenticação, ownership de matérias e revisão FSRS.
 
 ## Deploy
 
-Recommended deployment: stateless Node.js service with managed PostgreSQL:
+Deploy recomendado como serviço Node.js stateless com PostgreSQL gerido:
 
-1. Set required variables (`DATABASE_URL`, `JWT_SECRET`, `NODE_ENV=production`).
-2. Install dependencies and generate the Prisma client:
+1. Definir variáveis obrigatórias (`DATABASE_URL`, `JWT_SECRET`, `NODE_ENV=production`).
+2. Instalar dependências e gerar cliente Prisma:
    ```bash
    npm ci
    npm run prisma:generate
    ```
-3. Run migrations/schema push against the target environment.
-4. Start the API:
+3. Executar migrações/push de schema no ambiente alvo.
+4. Iniciar API:
    ```bash
    npm start
    ```
-5. Terminate TLS at your reverse proxy/load balancer.
-6. Ensure cookie settings match your frontend domain and HTTPS setup.
+5. Terminar TLS no reverse proxy/load balancer.
+6. Garantir compatibilidade de cookies com domínio HTTPS do frontend.
 
-## Security Considerations
+## Considerações de Segurança
 
-- use a strong rotated `JWT_SECRET`;
-- always run HTTPS in production;
-- keep auth cookies `HttpOnly`/`SameSite` as configured;
-- rate-limit sensitive endpoints;
-- restrict CORS to explicit origins;
-- enforce payload limits at the edge too;
-- store credentials and secrets in a secret manager.
+- usar `JWT_SECRET` forte e rotação periódica;
+- executar sempre com HTTPS em produção;
+- manter cookie de auth como `HttpOnly` e `SameSite`;
+- proteger endpoints sensíveis com rate limiting;
+- restringir CORS a origens explícitas;
+- aplicar limites de payload também na borda (gateway/proxy);
+- guardar credenciais e chaves em secret manager.
 
-## Versioning Strategy
+## Estratégia de Versionamento
 
-Current routes are unversioned (`/auth`, `/subjects`, `/users`).
+As rotas atuais são não versionadas (`/auth`, `/subjects`, `/users`).
 
-Recommended strategy:
+Estratégia recomendada:
 
-- introduce path versioning for breaking changes (`/v1/...`);
-- preserve compatibility within a major version;
-- publish deprecation plans and sunset dates for older versions.
+- introduzir versionamento por path para alterações breaking (`/v1/...`);
+- manter compatibilidade dentro da mesma major;
+- publicar plano de depreciação e data de sunset para versões antigas.
 
-## Contributing Guidelines
+## Diretrizes de Contribuição
 
-- keep strong TypeScript typing;
-- validate HTTP payloads with Zod in controllers;
-- keep business logic in services;
-- keep repositories persistence-focused;
-- for protected endpoints, enforce authentication + ownership;
-- update this README whenever the API contract changes.
+- manter tipagem forte em TypeScript;
+- validar payloads HTTP com Zod nos controllers;
+- concentrar regras de negócio nos services;
+- manter repositories focados em persistência;
+- para endpoints protegidos, garantir autenticação + ownership;
+- atualizar este README sempre que contrato de API mudar.
 
-Suggested local workflow:
+Fluxo local sugerido:
 
 ```bash
 npm install
@@ -1479,6 +1479,6 @@ npm run build
 npm run dev
 ```
 
-## License
+## Licença
 
 ISC
