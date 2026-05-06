@@ -1,10 +1,17 @@
 import { HttpError } from "../auth/auth.errors";
 import { generateFlashcardsFromMaterialText } from "../helpers/flashcard-generation.helper";
+import { FsrsService } from "../helpers/fsrs";
 import { SubjectService } from "../subject/subject.service";
-import type { CreateFlashcardBody, GenerateFlashcardsBody, UpdateFlashcardBody } from "./flashcard.dto";
+import type {
+  CreateFlashcardBody,
+  GenerateFlashcardsBody,
+  ReviewFlashcardBody,
+  UpdateFlashcardBody,
+} from "./flashcard.dto";
 import {
   FlashcardRepository,
   type CreateFlashcardInput,
+  type UpdateFlashcardReviewInput,
   type UpdateFlashcardInput,
 } from "./flashcard.repository";
 import type { FlashcardEntity, FlashcardResponse } from "./flashcard.types";
@@ -16,7 +23,8 @@ function toResponse(flashcard: FlashcardEntity): FlashcardResponse {
 export class FlashcardService {
   constructor(
     private readonly repository: FlashcardRepository,
-    private readonly subjectService: SubjectService
+    private readonly subjectService: SubjectService,
+    private readonly fsrsService: FsrsService
   ) {}
 
   private async assertSubjectOwned(subjectId: string, ownerUserId: string): Promise<void> {
@@ -29,6 +37,8 @@ export class FlashcardService {
     body: CreateFlashcardBody
   ): Promise<FlashcardResponse> {
     await this.assertSubjectOwned(subjectId, ownerUserId);
+    const now = new Date();
+    const initialFsrsState = this.fsrsService.initialState(now);
 
     const order =
       body.order ?? (await this.repository.getNextOrderForSubject(subjectId));
@@ -38,6 +48,13 @@ export class FlashcardService {
       front: body.front,
       back: body.back,
       order,
+      due: initialFsrsState.due,
+      lastReviewedAt: null,
+      stability: initialFsrsState.stability,
+      difficulty: initialFsrsState.difficulty,
+      reps: initialFsrsState.reps,
+      lapses: initialFsrsState.lapses,
+      state: initialFsrsState.state,
     };
 
     const flashcard = await this.repository.create(input);
@@ -87,6 +104,60 @@ export class FlashcardService {
     if (!deleted) {
       throw new HttpError(404, "Flashcard not found");
     }
+  }
+
+  async findNeedReviewForUserBySubject(
+    subjectId: string,
+    ownerUserId: string
+  ): Promise<FlashcardResponse[]> {
+    await this.assertSubjectOwned(subjectId, ownerUserId);
+    const rows = await this.repository.findNeedReviewForUserBySubjectId(
+      subjectId,
+      ownerUserId,
+      new Date()
+    );
+    return rows.map(toResponse);
+  }
+
+  async reviewForUser(
+    flashcardId: string,
+    ownerUserId: string,
+    body: ReviewFlashcardBody
+  ): Promise<FlashcardResponse> {
+    const flashcard = await this.repository.findByIdForUser(flashcardId, ownerUserId);
+    if (!flashcard) {
+      throw new HttpError(404, "Flashcard not found");
+    }
+
+    const now = new Date();
+    const reviewed = this.fsrsService.review({
+      stability: flashcard.stability,
+      difficulty: flashcard.difficulty,
+      due: flashcard.due,
+      lastReviewedAt: flashcard.lastReviewedAt,
+      reps: flashcard.reps,
+      lapses: flashcard.lapses,
+      state: flashcard.state,
+      rating: body.rating,
+      now,
+    });
+
+    const patch: UpdateFlashcardReviewInput = {
+      stability: reviewed.stability,
+      difficulty: reviewed.difficulty,
+      due: reviewed.due,
+      lastReviewedAt: reviewed.lastReviewedAt,
+      reps: reviewed.reps,
+      lapses: reviewed.lapses,
+      state: reviewed.state,
+    };
+
+    const updated = await this.repository.updateReviewForUser(flashcardId, ownerUserId, patch);
+    if (!updated) {
+      throw new HttpError(404, "Flashcard not found");
+    }
+
+    return toResponse(updated);
   }
 
   /**

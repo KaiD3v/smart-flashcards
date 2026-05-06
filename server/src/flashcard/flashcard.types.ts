@@ -3,6 +3,13 @@ export type FlashcardEntity = {
   front: string;
   back: string;
   order: number;
+  due: Date;
+  lastReviewedAt: Date | null;
+  stability: number;
+  difficulty: number;
+  reps: number;
+  lapses: number;
+  state: number;
   subjectId: string;
   createdAt: Date;
   updatedAt: Date;
