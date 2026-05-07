@@ -1,5 +1,7 @@
 # SmartFlashcards — Web Client
 
+[Versão em português](README.pt.md)
+
 Production-ready Next.js 15 frontend for **SmartFlashcards**, an AI-powered
 flashcards platform with FSRS spaced repetition. The app pairs with the
 Express + Prisma backend in [`../server`](../server).
