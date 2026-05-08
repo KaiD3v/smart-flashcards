@@ -37,7 +37,7 @@ A API SmartFlashcards resolve o problema central de organizar conteúdo de estud
 - **Conteúdo por matéria** para garantir que cada utilizador autenticado acede apenas aos seus próprios dados.
 - **Ciclo de vida de flashcards** com operações de criar/listar/editar/apagar.
 - **Agendamento FSRS** (`ts-fsrs`) para cálculo do próximo intervalo com base em `again|hard|good|easy`.
-- **Geração de flashcards com IA** via Ollama a partir de texto, com persistência opcional.
+- **Geração de flashcards com IA** a partir de texto (Ollama ou Groq), via `LLM_PROVIDER`, com persistência opcional.
 
 Esta API foi desenhada para clientes web e mobile que usam autenticação baseada em cookie `HttpOnly`, com JWT no backend.
 
@@ -87,7 +87,7 @@ sequenceDiagram
 - **ORM**: Prisma
 - **Autenticação**: JWT (`jsonwebtoken`) + cookie `HttpOnly`
 - **Hash de password**: bcrypt
-- **Integração de IA**: Ollama (geração de flashcards)
+- **Integração de IA**: Ollama ou Groq (`groq-sdk`) para geração de flashcards (`LLM_PROVIDER`)
 - **Repetição espaçada**: `ts-fsrs`
 
 ## Instalação e Configuração
@@ -113,12 +113,16 @@ sequenceDiagram
    - Defina `DATABASE_URL` com a string de conexão PostgreSQL.
    - Defina `JWT_SECRET` forte (mínimo recomendado: 32 bytes aleatórios).
 
-5. **Gerar cliente Prisma**
+5. **Configurar LLM para geração de flashcards** (opcional para os restantes endpoints)
+   - Padrão: `LLM_PROVIDER=ollama` com `OLLAMA_HOST` / `OLLAMA_MODEL` (ver [Variáveis de Ambiente](#variáveis-de-ambiente)).
+   - Para modelos hospedados na Groq: `LLM_PROVIDER=groq`, `GROQ_API_KEY` e, opcionalmente, `GROQ_MODEL`.
+
+6. **Gerar cliente Prisma**
    ```bash
    npm run prisma:generate
    ```
 
-6. **Aplicar schema na base de dados**
+7. **Aplicar schema na base de dados**
    Escolha uma opção:
    - Migrações (recomendado para histórico de alterações):
      ```bash
@@ -129,7 +133,7 @@ sequenceDiagram
      npm run prisma:push
      ```
 
-7. **Iniciar API**
+8. **Iniciar API**
    ```bash
    npm run dev
    ```
@@ -145,9 +149,23 @@ sequenceDiagram
 | `JWT_EXPIRES_IN` | Não | `7d` | Expiração do JWT no formato do `jsonwebtoken` (`7d`, `12h`, etc.). Padrão: `7d`. |
 | `AUTH_COOKIE_NAME` | Não | `access_token` | Nome do cookie de autenticação. Padrão: `access_token`. |
 | `JWT_COOKIE_MAX_AGE_MS` | Não | `604800000` | Vida útil do cookie em milissegundos. Padrão: 7 dias. |
-| `OLLAMA_HOST` | Não | `http://127.0.0.1:11434` | URL base do servidor Ollama. |
-| `OLLAMA_MODEL` | Não | `llama3.2` | Modelo padrão usado na geração de flashcards. |
-| `OLLAMA_API_KEY` | Não | `sk-local-ollama-key` | Token Bearer opcional enviado para o Ollama. |
+| `AUTH_COOKIE_SAME_SITE` | Não | `lax` | `SameSite` do cookie: `lax`, `strict` ou `none`. Em `none`, `secure` é forçado. |
+| `WEB_ORIGIN` | Não | `http://localhost:3001` | Origens permitidas no CORS (lista separada por vírgulas). Tem precedência sobre `CORS_ORIGIN`. |
+| `CORS_ORIGIN` | Não | `http://localhost:3001` | Usada apenas se `WEB_ORIGIN` não estiver definida (retrocompatível). |
+| `LLM_PROVIDER` | Não | `ollama` | Backend de IA dos flashcards: `ollama` ou `groq`. Padrão: `ollama`. |
+| `OLLAMA_HOST` | Com `LLM_PROVIDER=ollama` | `http://127.0.0.1:11434` | URL base do servidor Ollama. Ignorado com Groq. |
+| `OLLAMA_MODEL` | Não | `llama3:latest` | Modelo Ollama padrão (sobrescrito pelo campo opcional `model` no pedido). |
+| `OLLAMA_API_KEY` | Não | `sk-local-ollama-key` | Token Bearer opcional enviado ao Ollama. |
+| `GROQ_API_KEY` | Com `LLM_PROVIDER=groq` | `gsk_...` | Chave da API Groq. |
+| `GROQ_MODEL` | Não | `llama-3.3-70b-versatile` | Modelo de chat Groq quando o pedido não define `model`. |
+
+### Fornecedores de LLM (geração de flashcards)
+
+A geração está em `src/helpers/ai-agent.helper.ts`, que delega para **Ollama** (SDK `ollama`) ou **Groq** (`groq-sdk`) conforme `LLM_PROVIDER`.
+
+- **Ollama**: servidor compatível + `OLLAMA_HOST` / `OLLAMA_MODEL`. JSON estruturado usa a opção `format` do Ollama.
+- **Groq**: `LLM_PROVIDER=groq` e `GROQ_API_KEY`. Para payloads JSON de flashcards, ativa-se `response_format` com modo objeto JSON quando a geração pede formato JSON.
+- O campo opcional `model` em `POST .../flashcards/generate` sobrescreve o modelo padrão do fornecedor ativo.
 
 ## Execução do Projeto
 
@@ -1069,7 +1087,7 @@ curl -X POST "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f
 
 ### `POST /subjects/:id/flashcards/generate`
 
-- **Descrição**: gera flashcards com Ollama a partir de texto. Pode persistir na matéria.
+- **Descrição**: gera flashcards a partir de texto com o LLM configurado (`LLM_PROVIDER`: Ollama ou Groq). Pode persistir na matéria.
 - **Auth**: obrigatória.
 
 #### Exemplo de request (curl)
