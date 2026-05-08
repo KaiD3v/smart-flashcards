@@ -1,4 +1,4 @@
-const DEFAULT_API_URL = "http://localhost:3000";
+const DEFAULT_API_URL = "/api";
 const DEFAULT_COOKIE_NAME = "access_token";
 const DEFAULT_SITE_NAME = "SmartFlashcards";
 
