@@ -7,13 +7,23 @@ import { AuthService } from "../auth/auth.service";
 
 const DEFAULT_JWT_EXPIRES: SignOptions["expiresIn"] = "7d";
 const DEFAULT_COOKIE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
+const SAME_SITE_VALUES = new Set(["lax", "strict", "none"] as const);
 
 function resolveCookieOptions(): CookieOptions {
   const secure = process.env.NODE_ENV === "production";
+  const sameSiteRaw = process.env.AUTH_COOKIE_SAME_SITE?.toLowerCase();
+  const sameSite =
+    sameSiteRaw && SAME_SITE_VALUES.has(sameSiteRaw as "lax" | "strict" | "none")
+      ? (sameSiteRaw as "lax" | "strict" | "none")
+      : "lax";
+
+  // Browsers require Secure when SameSite=None.
+  const effectiveSecure = sameSite === "none" ? true : secure;
+
   return {
     httpOnly: true,
-    secure,
-    sameSite: "lax",
+    secure: effectiveSecure,
+    sameSite,
     path: "/",
     maxAge: Number(process.env.JWT_COOKIE_MAX_AGE_MS) || DEFAULT_COOKIE_MAX_AGE_MS,
   };

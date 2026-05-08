@@ -57,7 +57,7 @@ export type GenerateFlashcardsFromTextParams = {
 };
 
 /**
- * Envia o texto da matéria ao Ollama e devolve flashcards gerados (frente/verso).
+ * Envia o texto da matéria ao LLM (Ollama ou Groq) e devolve flashcards gerados (frente/verso).
  * Usa `format: "json"` para encorajar saída estruturada.
  */
 export async function generateFlashcardsFromMaterialText(
