@@ -32,6 +32,9 @@ export const metadata: Metadata = {
     "study",
     "learning",
   ],
+  verification: {
+    google: process.env.GOOGLE_VERIFICATION_ID,
+  },
 };
 
 export const viewport: Viewport = {
