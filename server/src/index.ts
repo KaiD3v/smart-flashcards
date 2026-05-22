@@ -5,6 +5,7 @@ import express, { type Express, type NextFunction, type Request, type Response }
 import type { PrismaClient } from "../generated/prisma/client";
 import { PrismaClientSingleton } from "./db/prisma";
 import { createRootRouter } from "./routes/router";
+import { startReviewReminderScheduler } from "./review-reminder/review-reminder.scheduler";
 
 function parseAllowedOrigins(): Set<string> {
   const raw = process.env.WEB_ORIGIN ?? process.env.CORS_ORIGIN ?? "http://localhost:3001";
@@ -77,3 +78,7 @@ const prisma = PrismaClientSingleton.getInstance().prisma;
 const app = new Application(prisma);
 
 app.listen(port);
+
+if (process.env.REVIEW_REMINDER_ENABLED === "true") {
+  startReviewReminderScheduler(prisma);
+}
