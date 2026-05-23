@@ -55,8 +55,12 @@ export class MailService {
   private handleSendError(error: unknown): never {
     const message = error instanceof Error ? error.message : String(error);
     if (message.includes("Unauthorized")) {
+      const inboxHint =
+        this.config.provider === "mailtrap" && this.config.sandbox
+          ? ` Confira MAILTRAP_INBOX_ID (ID da inbox em Mailtrap → Sandboxes → Integration; inbox errada também retorna Unauthorized).`
+          : "";
       throw new Error(
-        "Mailtrap API retornou Unauthorized. MAILTRAP_API_TOKEN deve ser um API Token de https://mailtrap.io/api-tokens (com acesso ao Email Sandbox), não a senha SMTP da aba Integration. Alternativa: MAIL_PROVIDER=smtp e use MAIL_SMTP_USER/PASS.",
+        `Mailtrap API retornou Unauthorized.${inboxHint} Token: https://mailtrap.io/api-tokens (permissão Email Sandbox). Alternativa: MAIL_PROVIDER=smtp.`,
         { cause: error }
       );
     }
