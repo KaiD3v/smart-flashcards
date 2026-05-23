@@ -1,48 +1,33 @@
 import nodemailer from "nodemailer";
+import { MailtrapTransport } from "mailtrap";
 import type { Transporter } from "nodemailer";
-import { loadMailConfig, type MailConfig } from "./mail.config";
+import { loadMailConfig, type MailConfig, type MailMailtrapConfig } from "./mail.config";
 import type { ReviewReminderEmailPayload } from "./mail.types";
+import {
+  buildReviewReminderHtml,
+  buildReviewReminderText,
+} from "./review-reminder.template";
 
-function buildReviewReminderText(payload: ReviewReminderEmailPayload): string {
-  const lines = [
-    `Olá, ${payload.userName}!`,
-    "",
-    `Você tem ${payload.totalDueCount} flashcard(s) para revisar no StudyHub.`,
-    "",
-  ];
-
-  for (const subject of payload.subjects) {
-    lines.push(
-      `- ${subject.subjectName}: ${subject.dueCount} card(s) — ${subject.reviewUrl}`
-    );
-  }
-
-  lines.push("", "Bons estudos!");
-  return lines.join("\n");
+function createSmtpTransporter(config: MailConfig & { provider: "smtp" }): Transporter {
+  return nodemailer.createTransport({
+    host: config.smtpHost,
+    port: config.smtpPort,
+    secure: config.smtpPort === 465,
+    auth: {
+      user: config.smtpUser,
+      pass: config.smtpPass,
+    },
+  });
 }
 
-function buildReviewReminderHtml(payload: ReviewReminderEmailPayload): string {
-  const subjectRows = payload.subjects
-    .map(
-      (subject) =>
-        `<li><strong>${escapeHtml(subject.subjectName)}</strong>: ${subject.dueCount} card(s) — <a href="${escapeHtml(subject.reviewUrl)}">Revisar</a></li>`
-    )
-    .join("");
-
-  return `
-    <p>Olá, ${escapeHtml(payload.userName)}!</p>
-    <p>Você tem <strong>${payload.totalDueCount}</strong> flashcard(s) para revisar no StudyHub.</p>
-    <ul>${subjectRows}</ul>
-    <p>Bons estudos!</p>
-  `.trim();
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
+function createMailtrapTransporter(config: MailMailtrapConfig): Transporter {
+  return nodemailer.createTransport(
+    MailtrapTransport({
+      token: config.apiToken,
+      sandbox: config.sandbox,
+      testInboxId: config.testInboxId,
+    })
+  );
 }
 
 export class MailService {
@@ -51,36 +36,61 @@ export class MailService {
 
   constructor(config?: MailConfig) {
     this.config = config ?? loadMailConfig();
+    if (this.config.provider === "mailtrap") {
+      const mode = this.config.sandbox ? "sandbox" : "sending";
+      console.log(`[mail] Mailtrap transport (${mode})`);
+    }
   }
 
   private getTransporter(): Transporter {
     if (!this.transporter) {
-      this.transporter = nodemailer.createTransport({
-        host: this.config.smtpHost,
-        port: this.config.smtpPort,
-        secure: this.config.smtpPort === 465,
-        auth: {
-          user: this.config.smtpUser,
-          pass: this.config.smtpPass,
-        },
-      });
+      this.transporter =
+        this.config.provider === "mailtrap"
+          ? createMailtrapTransporter(this.config)
+          : createSmtpTransporter(this.config);
     }
     return this.transporter;
   }
 
+  private handleSendError(error: unknown): never {
+    const message = error instanceof Error ? error.message : String(error);
+    if (message.includes("Unauthorized")) {
+      throw new Error(
+        "Mailtrap API retornou Unauthorized. MAILTRAP_API_TOKEN deve ser um API Token de https://mailtrap.io/api-tokens (com acesso ao Email Sandbox), não a senha SMTP da aba Integration. Alternativa: MAIL_PROVIDER=smtp e use MAIL_SMTP_USER/PASS.",
+        { cause: error }
+      );
+    }
+    throw error;
+  }
+
   async sendReviewReminder(payload: ReviewReminderEmailPayload): Promise<void> {
-    const subjectLine = `StudyHub: você tem ${payload.totalDueCount} flashcard(s) para revisar`;
-    const info = await this.getTransporter().sendMail({
+    const cardLabel = payload.totalDueCount === 1 ? "flashcard" : "flashcards";
+    const subjectLine = `StudyHub: ${payload.totalDueCount} ${cardLabel} para revisar`;
+    let info;
+    try {
+      info = await this.getTransporter().sendMail({
       from: this.config.from,
       to: payload.to,
       subject: subjectLine,
       text: buildReviewReminderText(payload),
       html: buildReviewReminderHtml(payload),
-    });
+      ...(this.config.provider === "mailtrap" && this.config.sandbox
+        ? { category: "StudyHub Review Reminder" }
+        : {}),
+      });
+    } catch (error) {
+      this.handleSendError(error);
+    }
 
-    const previewUrl = nodemailer.getTestMessageUrl(info);
-    if (previewUrl) {
-      console.log(`[mail] Preview URL: ${previewUrl}`);
+    if (this.config.provider === "smtp") {
+      const previewUrl = nodemailer.getTestMessageUrl(info);
+      if (previewUrl) {
+        console.log(`[mail] Preview URL: ${previewUrl}`);
+      }
+    } else if (this.config.provider === "mailtrap" && this.config.sandbox) {
+      console.log(
+        `[mail] Mailtrap sandbox — veja o e-mail em https://mailtrap.io/sandboxes (inbox ${this.config.testInboxId ?? "?"})`
+      );
     }
   }
 
