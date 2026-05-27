@@ -1,10 +1,15 @@
 import { HttpError } from "../auth/auth.errors";
+import {
+  extractTextFromDocument,
+  resolveUploadedDocumentMimeType,
+} from "../helpers/document-text-extraction.helper";
 import { generateFlashcardsFromMaterialText } from "../helpers/flashcard-generation.helper";
 import { FsrsService } from "../helpers/fsrs";
 import { SubjectService } from "../subject/subject.service";
 import type {
   CreateFlashcardBody,
   GenerateFlashcardsBody,
+  GenerateFromFileFields,
   ReviewFlashcardBody,
   UpdateFlashcardBody,
 } from "./flashcard.dto";
@@ -14,7 +19,11 @@ import {
   type UpdateFlashcardReviewInput,
   type UpdateFlashcardInput,
 } from "./flashcard.repository";
-import type { FlashcardEntity, FlashcardResponse } from "./flashcard.types";
+import type {
+  FlashcardEntity,
+  FlashcardResponse,
+  GenerateFromFileResponse,
+} from "./flashcard.types";
 
 function toResponse(flashcard: FlashcardEntity): FlashcardResponse {
   return flashcard;
@@ -192,5 +201,47 @@ export class FlashcardService {
     }
 
     return { flashcards: generated, persisted: false };
+  }
+
+  /**
+   * Extrai texto de um documento (PDF, DOCX, TXT) e gera flashcards via LLM.
+   * O ficheiro não é persistido — apenas o texto extraído alimenta a geração.
+   */
+  async generateFromFile(
+    subjectId: string,
+    ownerUserId: string,
+    file: Express.Multer.File,
+    fields: GenerateFromFileFields
+  ): Promise<GenerateFromFileResponse> {
+    const mimeType = resolveUploadedDocumentMimeType(file.originalname, file.mimetype);
+
+    let extracted: Awaited<ReturnType<typeof extractTextFromDocument>>;
+    try {
+      extracted = await extractTextFromDocument(file.buffer, mimeType);
+    } catch (error) {
+      if (error instanceof HttpError) {
+        throw error;
+      }
+      const message = error instanceof Error ? error.message : "Document text extraction failed";
+      throw new HttpError(400, message);
+    }
+
+    const result = await this.generateFromMaterial(subjectId, ownerUserId, {
+      materialText: extracted.text,
+      maxCards: fields.maxCards,
+      model: fields.model,
+      persist: fields.persist,
+    });
+
+    return {
+      ...result,
+      source: {
+        filename: file.originalname,
+        mimeType,
+        extractedCharCount: extracted.text.length,
+        originalCharCount: extracted.originalCharCount,
+        truncated: extracted.truncated,
+      },
+    };
   }
 }

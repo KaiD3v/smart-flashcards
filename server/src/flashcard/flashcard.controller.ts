@@ -4,6 +4,7 @@ import { HttpError } from "../auth/auth.errors";
 import {
   createFlashcardBodySchema,
   generateFlashcardsBodySchema,
+  generateFromFileFieldsSchema,
   reviewFlashcardBodySchema,
   updateFlashcardBodySchema,
 } from "./flashcard.dto";
@@ -168,6 +169,41 @@ export class FlashcardController {
 
       const ownerId = authUserId(req);
       const result = await this.flashcardService.generateFromMaterial(subjectId, ownerId, parsed.data);
+      res.status(200).json(result);
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  generateFromFile = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const subjectId = subjectIdFromParentParams(req);
+      if (!subjectId) {
+        res.status(400).json({ message: "Subject id is required" });
+        return;
+      }
+
+      if (!req.file) {
+        res.status(400).json({ message: "A file is required" });
+        return;
+      }
+
+      const parsed = generateFromFileFieldsSchema.safeParse(req.body);
+      if (!parsed.success) {
+        res.status(400).json({
+          message: "Validation failed",
+          issues: parsed.error.issues,
+        });
+        return;
+      }
+
+      const ownerId = authUserId(req);
+      const result = await this.flashcardService.generateFromFile(
+        subjectId,
+        ownerId,
+        req.file,
+        parsed.data
+      );
       res.status(200).json(result);
     } catch (error) {
       next(error);

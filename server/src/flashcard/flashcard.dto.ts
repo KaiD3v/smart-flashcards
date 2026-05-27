@@ -24,6 +24,19 @@ export const generateFlashcardsBodySchema = z.object({
   persist: z.boolean().optional(),
 });
 
+export const generateFromFileFieldsSchema = z.object({
+  maxCards: z.coerce.number().int().min(1).max(50).optional(),
+  model: z
+    .string()
+    .max(200)
+    .optional()
+    .transform((value) => (value && value.trim().length > 0 ? value.trim() : undefined)),
+  persist: z
+    .union([z.boolean(), z.enum(["true", "false"])])
+    .optional()
+    .transform((value) => value === true || value === "true"),
+});
+
 export const reviewFlashcardBodySchema = z.object({
   rating: z
     .enum(["again", "hard", "good", "easy"])
@@ -34,4 +47,5 @@ export const reviewFlashcardBodySchema = z.object({
 export type CreateFlashcardBody = z.infer<typeof createFlashcardBodySchema>;
 export type UpdateFlashcardBody = z.infer<typeof updateFlashcardBodySchema>;
 export type GenerateFlashcardsBody = z.infer<typeof generateFlashcardsBodySchema>;
+export type GenerateFromFileFields = z.infer<typeof generateFromFileFieldsSchema>;
 export type ReviewFlashcardBody = z.infer<typeof reviewFlashcardBodySchema>;

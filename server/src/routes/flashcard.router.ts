@@ -6,6 +6,10 @@ import { FlashcardController } from "../flashcard/flashcard.controller";
 import { FlashcardRepository } from "../flashcard/flashcard.repository";
 import { FlashcardService } from "../flashcard/flashcard.service";
 import { FsrsService } from "../helpers/fsrs";
+import {
+  createDocumentFileUploadMiddleware,
+  requireUploadedDocument,
+} from "../middleware/file-upload.middleware";
 import { SubjectRepository } from "../subject/subject.repository";
 import { SubjectService } from "../subject/subject.service";
 
@@ -29,6 +33,7 @@ export function createFlashcardRouter(
   const controller = new FlashcardController(flashcardService);
 
   const requireAuth = createRequireAuthMiddleware(authService, authCookieName);
+  const uploadDocument = createDocumentFileUploadMiddleware();
 
   const router = Router({ mergeParams: true });
 
@@ -38,6 +43,12 @@ export function createFlashcardRouter(
   router.get("/need-review", controller.findNeedReviewBySubject);
   router.post("/", controller.create);
   router.post("/generate", controller.generate);
+  router.post(
+    "/generate-from-file",
+    uploadDocument,
+    requireUploadedDocument,
+    controller.generateFromFile
+  );
   router.get("/:flashcardId", controller.findById);
   router.post("/:flashcardId/review", controller.review);
   router.patch("/:flashcardId", controller.update);

@@ -24,6 +24,13 @@ export type GenerateFlashcardsPayload = {
   persist?: boolean;
 };
 
+export type GenerateFromFilePayload = {
+  file: File;
+  maxCards?: number;
+  model?: string;
+  persist?: boolean;
+};
+
 export const flashcardsService = {
   async listBySubject(subjectId: string): Promise<Flashcard[]> {
     const { data } = await api.get<{ flashcards: Flashcard[] }>(
@@ -92,6 +99,40 @@ export const flashcardsService = {
     const { data } = await api.post<GenerationResult>(
       `/subjects/${subjectId}/flashcards/generate`,
       payload
+    );
+    return data;
+  },
+
+  async generateFromFile(
+    subjectId: string,
+    payload: GenerateFromFilePayload
+  ): Promise<GenerationResult> {
+    const formData = new FormData();
+    formData.append("file", payload.file);
+    if (payload.maxCards !== undefined) {
+      formData.append("maxCards", String(payload.maxCards));
+    }
+    if (payload.model) {
+      formData.append("model", payload.model);
+    }
+    if (payload.persist !== undefined) {
+      formData.append("persist", String(payload.persist));
+    }
+
+    const { data } = await api.post<GenerationResult>(
+      `/subjects/${subjectId}/flashcards/generate-from-file`,
+      formData,
+      {
+        timeout: 120_000,
+        transformRequest: [
+          (payload, headers) => {
+            if (payload instanceof FormData) {
+              delete headers["Content-Type"];
+            }
+            return payload;
+          },
+        ],
+      }
     );
     return data;
   },
