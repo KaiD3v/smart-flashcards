@@ -39,9 +39,17 @@ export type GeneratedFlashcardDraft = {
   back: string;
 };
 
+export type GenerationSource = {
+  filename: string;
+  mimeType: string;
+  extractedCharCount: number;
+  originalCharCount: number;
+  truncated: boolean;
+};
+
 export type GenerationResult =
-  | { flashcards: Flashcard[]; persisted: true }
-  | { flashcards: GeneratedFlashcardDraft[]; persisted: false };
+  | { flashcards: Flashcard[]; persisted: true; source?: GenerationSource }
+  | { flashcards: GeneratedFlashcardDraft[]; persisted: false; source?: GenerationSource };
 
 export type ReviewRating = "again" | "hard" | "good" | "easy";
 

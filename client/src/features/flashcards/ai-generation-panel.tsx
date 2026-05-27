@@ -2,15 +2,18 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Check,
   Cpu,
+  FileText,
   Loader2,
   Save,
   Sparkles,
+  Upload,
   Wand2,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -27,8 +30,11 @@ import {
 import {
   useCreateFlashcard,
   useGenerateFlashcards,
+  useGenerateFlashcardsFromFile,
 } from "@/hooks/use-flashcards";
-import type { GeneratedFlashcardDraft } from "@/types/api";
+import type { GeneratedFlashcardDraft, GenerationResult, GenerationSource } from "@/types/api";
+
+const ACCEPTED_FILE_TYPES = ".pdf,.docx,.txt";
 
 const PROGRESS_MESSAGES = [
   "Reading your material…",
@@ -37,11 +43,20 @@ const PROGRESS_MESSAGES = [
   "Polishing the deck…",
 ];
 
+const FILE_PROGRESS_MESSAGES = [
+  "Extracting text from document…",
+  ...PROGRESS_MESSAGES.slice(1),
+];
+
 export function AiGenerationPanel({ subjectId }: { subjectId: string }) {
   const generate = useGenerateFlashcards(subjectId);
+  const generateFromFile = useGenerateFlashcardsFromFile(subjectId);
   const create = useCreateFlashcard(subjectId);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [drafts, setDrafts] = useState<GeneratedFlashcardDraft[] | null>(null);
   const [progressIndex, setProgressIndex] = useState(0);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [lastSource, setLastSource] = useState<GenerationSource | null>(null);
 
   const form = useForm<GenerateFlashcardsValues>({
     resolver: zodResolver(generateFlashcardsSchema),
@@ -53,36 +68,86 @@ export function AiGenerationPanel({ subjectId }: { subjectId: string }) {
     },
   });
 
-  async function onSubmit(values: GenerateFlashcardsValues) {
+  async function handleGenerationResult(result: GenerationResult) {
+    setLastSource(result.source ?? null);
+
+    if (result.persisted) {
+      toast.success(`Saved ${result.flashcards.length} flashcards`, {
+        description: "They are now part of this subject.",
+      });
+      setDrafts(null);
+      setSelectedFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } else {
+      setDrafts(result.flashcards);
+      toast.success(`Generated ${result.flashcards.length} flashcards`, {
+        description: result.source?.truncated
+          ? "Some text was truncated before generation."
+          : "Review and save the ones you like.",
+      });
+    }
+  }
+
+  async function runWithProgress(fromFile: boolean, task: () => Promise<GenerationResult>) {
     setDrafts(null);
     setProgressIndex(0);
+    setLastSource(null);
+    const messages = fromFile ? FILE_PROGRESS_MESSAGES : PROGRESS_MESSAGES;
     const interval = window.setInterval(() => {
-      setProgressIndex((prev) =>
-        prev < PROGRESS_MESSAGES.length - 1 ? prev + 1 : prev
-      );
+      setProgressIndex((prev) => (prev < messages.length - 1 ? prev + 1 : prev));
     }, 1500);
 
     try {
-      const result = await generate.mutateAsync({
+      const result = await task();
+      await handleGenerationResult(result);
+    } finally {
+      window.clearInterval(interval);
+    }
+  }
+
+  async function onSubmitText(values: GenerateFlashcardsValues) {
+    await runWithProgress(false, () =>
+      generate.mutateAsync({
         materialText: values.materialText,
         maxCards: values.maxCards,
         model: values.model,
         persist: values.persist,
-      });
+      })
+    );
+  }
 
-      if (result.persisted) {
-        toast.success(`Saved ${result.flashcards.length} flashcards`, {
-          description: "They are now part of this subject.",
-        });
-        setDrafts(null);
-      } else {
-        setDrafts(result.flashcards);
-        toast.success(`Generated ${result.flashcards.length} flashcards`, {
-          description: "Review and save the ones you like.",
-        });
-      }
-    } finally {
-      window.clearInterval(interval);
+  async function onSubmitForm(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const values = form.getValues();
+
+    if (selectedFile) {
+      await runWithProgress(true, () =>
+        generateFromFile.mutateAsync({
+          file: selectedFile,
+          maxCards: values.maxCards,
+          model: values.model,
+          persist: values.persist,
+        })
+      );
+      return;
+    }
+
+    await form.handleSubmit(onSubmitText)();
+  }
+
+  function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0] ?? null;
+    setSelectedFile(file);
+    setLastSource(null);
+  }
+
+  function clearSelectedFile() {
+    setSelectedFile(null);
+    setLastSource(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   }
 
@@ -101,6 +166,7 @@ export function AiGenerationPanel({ subjectId }: { subjectId: string }) {
       toast.success(`Saved ${saved} flashcard${saved === 1 ? "" : "s"}`);
       setDrafts(null);
       form.reset({ ...form.getValues(), materialText: "" });
+      clearSelectedFile();
     }
   }
 
@@ -109,7 +175,8 @@ export function AiGenerationPanel({ subjectId }: { subjectId: string }) {
     setDrafts((prev) => prev?.filter((_, i) => i !== index) ?? null);
   }
 
-  const isGenerating = generate.isPending;
+  const isGenerating = generate.isPending || generateFromFile.isPending;
+  const progressMessages = selectedFile ? FILE_PROGRESS_MESSAGES : PROGRESS_MESSAGES;
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1.1fr_1fr]">
@@ -126,26 +193,76 @@ export function AiGenerationPanel({ subjectId }: { subjectId: string }) {
             <div>
               <h3 className="text-base font-semibold">Generate with AI</h3>
               <p className="text-xs text-muted-foreground">
-                Paste study material and we&apos;ll craft flashcards for you.
+                Upload a PDF, Word (.docx), or text file — or paste material below.
               </p>
             </div>
           </div>
 
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
+            onSubmit={onSubmitForm}
             className="flex flex-col gap-4"
             noValidate
           >
             <div className="flex flex-col gap-2">
-              <Label htmlFor="materialText">Study material</Label>
+              <Label htmlFor="documentFile">Document upload</Label>
+              <div className="flex flex-col gap-2 rounded-xl border border-border px-3 py-3">
+                <input
+                  ref={fileInputRef}
+                  id="documentFile"
+                  type="file"
+                  accept={ACCEPTED_FILE_TYPES}
+                  className="sr-only"
+                  onChange={handleFileChange}
+                  disabled={isGenerating}
+                />
+                {selectedFile ? (
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex min-w-0 items-center gap-2">
+                      <FileText className="h-4 w-4 shrink-0 text-primary" />
+                      <span className="truncate text-sm">{selectedFile.name}</span>
+                    </div>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      onClick={clearSelectedFile}
+                      disabled={isGenerating}
+                    >
+                      <X className="h-4 w-4" />
+                      Remove
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="justify-start"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={isGenerating}
+                  >
+                    <Upload className="h-4 w-4" />
+                    Choose PDF, DOCX, or TXT
+                  </Button>
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="materialText">
+                Study material{" "}
+                <span className="text-muted-foreground">
+                  {selectedFile ? "(optional when a file is selected)" : ""}
+                </span>
+              </Label>
               <Textarea
                 id="materialText"
                 rows={10}
                 placeholder="Paste lecture notes, textbook excerpts, or your own summary…"
                 aria-invalid={Boolean(form.formState.errors.materialText)}
+                disabled={Boolean(selectedFile)}
                 {...form.register("materialText")}
               />
-              {form.formState.errors.materialText ? (
+              {form.formState.errors.materialText && !selectedFile ? (
                 <p className="text-xs text-destructive">
                   {form.formState.errors.materialText.message}
                 </p>
@@ -207,7 +324,11 @@ export function AiGenerationPanel({ subjectId }: { subjectId: string }) {
               ) : (
                 <Wand2 />
               )}
-              {isGenerating ? "Generating…" : "Generate flashcards"}
+              {isGenerating
+                ? "Generating…"
+                : selectedFile
+                  ? "Generate from file"
+                  : "Generate flashcards"}
             </Button>
           </form>
         </CardContent>
@@ -221,6 +342,14 @@ export function AiGenerationPanel({ subjectId }: { subjectId: string }) {
               <Badge variant="info">{drafts.length} drafts</Badge>
             ) : null}
           </div>
+
+          {lastSource?.truncated ? (
+            <p className="rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-700 dark:text-amber-300">
+              Text from <span className="font-medium">{lastSource.filename}</span> was
+              truncated to {lastSource.extractedCharCount.toLocaleString()} characters
+              (original: {lastSource.originalCharCount.toLocaleString()}).
+            </p>
+          ) : null}
 
           <AnimatePresence mode="wait">
             {isGenerating ? (
@@ -237,15 +366,15 @@ export function AiGenerationPanel({ subjectId }: { subjectId: string }) {
                 </span>
                 <div className="space-y-1">
                   <p className="text-sm font-medium">
-                    {PROGRESS_MESSAGES[progressIndex] ??
-                      PROGRESS_MESSAGES[PROGRESS_MESSAGES.length - 1]}
+                    {progressMessages[progressIndex] ??
+                      progressMessages[progressMessages.length - 1]}
                   </p>
                   <p className="text-xs text-muted-foreground">
                     AI generation may take a few seconds.
                   </p>
                 </div>
                 <div className="flex gap-1.5">
-                  {PROGRESS_MESSAGES.map((_, i) => (
+                  {progressMessages.map((_, i) => (
                     <span
                       key={i}
                       className={`h-1.5 w-6 rounded-full transition-colors ${

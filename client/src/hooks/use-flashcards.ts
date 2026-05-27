@@ -10,6 +10,7 @@ import {
   flashcardsService,
   type CreateFlashcardPayload,
   type GenerateFlashcardsPayload,
+  type GenerateFromFilePayload,
   type UpdateFlashcardPayload,
 } from "@/services/flashcards.service";
 import { normalizeError } from "@/lib/api/error";
@@ -169,6 +170,28 @@ export function useGenerateFlashcards(subjectId: string) {
     onError: (error) => {
       const normalized = normalizeError(error);
       toast.error("Could not generate flashcards", {
+        description: normalized.message,
+      });
+    },
+  });
+}
+
+export function useGenerateFlashcardsFromFile(subjectId: string) {
+  const qc = useQueryClient();
+  return useMutation<GenerationResult, unknown, GenerateFromFilePayload>({
+    mutationFn: (payload) => flashcardsService.generateFromFile(subjectId, payload),
+    onSuccess: (result) => {
+      if (result.persisted) {
+        qc.setQueryData<Flashcard[] | undefined>(
+          flashcardsKeys.list(subjectId),
+          (prev) => (prev ? [...prev, ...result.flashcards] : result.flashcards)
+        );
+        qc.invalidateQueries({ queryKey: flashcardsKeys.needReview(subjectId) });
+      }
+    },
+    onError: (error) => {
+      const normalized = normalizeError(error);
+      toast.error("Could not generate flashcards from file", {
         description: normalized.message,
       });
     },
