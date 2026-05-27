@@ -28,7 +28,7 @@ Organize flashcards by topic, course, or exam.
 
 #### Generate flashcards with AI
 
-Paste study material, choose how many cards to generate, preview drafts, and save the cards you want.
+Paste study material or upload a PDF, Word (.docx), or text file. Choose how many cards to generate, preview drafts, and save the cards you want. Uploaded files are not stored on the server—only extracted text is sent to the LLM.
 
 ![Generate cards flow](assets/generate-cards.gif)
 
@@ -43,7 +43,7 @@ Review one card at a time with flip animations, progress tracking, and rating co
 - Account registration, login, logout, and authenticated sessions with HttpOnly JWT cookies.
 - Subject management with create, edit, delete, search, and empty states.
 - Manual flashcard creation and editing.
-- AI flashcard generation from long-form study material.
+- AI flashcard generation from pasted text or uploaded documents (PDF, DOCX, TXT).
 - Preview generated cards before saving.
 - FSRS-based review flow with due-card filtering.
 - Keyboard shortcuts for fast review sessions.
@@ -73,7 +73,7 @@ Review one card at a time with flip animations, progress tracking, and rating co
 - PostgreSQL
 - JWT in HttpOnly cookies
 - FSRS scheduling
-- Ollama-powered flashcard generation
+- Ollama or Groq for flashcard generation; document parsing with pdf-parse and mammoth
 
 ### Project Structure
 
@@ -124,6 +124,7 @@ Backend:
 DATABASE_URL=postgresql://...
 JWT_SECRET=your-secret
 WEB_ORIGIN=http://localhost:3001
+FILE_UPLOAD_MAX_BYTES=10485760
 ```
 
 For production, prefer a same-site deployment or a frontend proxy to the backend so HttpOnly cookies work reliably.
@@ -148,7 +149,7 @@ Organize seus flashcards por assunto, curso ou prova.
 
 #### Geração de flashcards com IA
 
-Cole um material de estudo, escolha quantos cartões gerar, visualize os rascunhos e salve os flashcards desejados.
+Cole um material de estudo ou envie um ficheiro PDF, Word (.docx) ou TXT. Escolha quantos cartões gerar, visualize os rascunhos e salve os flashcards desejados. Os ficheiros não são armazenados no servidor — apenas o texto extraído é enviado ao LLM.
 
 ![Fluxo de geração de cards](assets/generate-cards.gif)
 
@@ -163,7 +164,7 @@ Revise um cartão por vez com animação de flip, indicador de progresso e botõ
 - Cadastro, login, logout e sessão autenticada com JWT em cookie HttpOnly.
 - Gerenciamento de matérias com criação, edição, exclusão, busca e estados vazios.
 - Criação e edição manual de flashcards.
-- Geração de flashcards por IA a partir de materiais de estudo.
+- Geração de flashcards por IA a partir de texto colado ou ficheiros (PDF, DOCX, TXT).
 - Pré-visualização dos cards gerados antes de salvar.
 - Fluxo de revisão baseado em FSRS com filtro de cards pendentes.
 - Atalhos de teclado para revisões rápidas.
@@ -193,7 +194,7 @@ Revise um cartão por vez com animação de flip, indicador de progresso e botõ
 - PostgreSQL
 - JWT em cookies HttpOnly
 - Agendamento FSRS
-- Geração de flashcards com Ollama
+- Geração com Ollama ou Groq; extração de texto com pdf-parse e mammoth
 
 ### Estrutura do Projeto
 
@@ -244,6 +245,7 @@ Backend:
 DATABASE_URL=postgresql://...
 JWT_SECRET=your-secret
 WEB_ORIGIN=http://localhost:3001
+FILE_UPLOAD_MAX_BYTES=10485760
 ```
 
 Em produção, prefira hospedar frontend e backend no mesmo site ou usar um proxy do frontend para o backend, garantindo que os cookies HttpOnly funcionem corretamente.

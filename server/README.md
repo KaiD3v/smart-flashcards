@@ -37,7 +37,7 @@ The SmartFlashcards API addresses the core problem of organizing study content a
 - **Subject-scoped content** so each authenticated user only accesses their own data.
 - **Flashcard lifecycle** with create/list/update/delete operations.
 - **FSRS scheduling** (`ts-fsrs`) to compute the next interval based on `again|hard|good|easy`.
-- **AI flashcard generation** from raw text (Ollama or Groq), selected by `LLM_PROVIDER`, with optional persistence.
+- **AI flashcard generation** from raw text or uploaded documents (PDF, DOCX, TXT) via Ollama or Groq (`LLM_PROVIDER`), with optional persistence. Uploaded files are not stored—only extracted text is sent to the LLM.
 
 This API is designed for web and mobile clients that use `HttpOnly` cookie-based authentication with JWT on the server.
 
@@ -158,6 +158,7 @@ sequenceDiagram
 | `OLLAMA_API_KEY` | No | `sk-local-ollama-key` | Optional Bearer token sent to Ollama. |
 | `GROQ_API_KEY` | When `LLM_PROVIDER=groq` | `gsk_...` | Groq API key. |
 | `GROQ_MODEL` | No | `llama-3.3-70b-versatile` | Default Groq chat model when the request does not specify `model`. |
+| `FILE_UPLOAD_MAX_BYTES` | No | `10485760` | Max upload size for `POST .../flashcards/generate-from-file` (bytes). Default: 10 MB. |
 
 ### LLM providers (flashcard generation)
 
@@ -165,7 +166,8 @@ Generation is implemented in `src/helpers/ai-agent.helper.ts`, which delegates t
 
 - **Ollama**: run a compatible server and set `OLLAMA_HOST` / `OLLAMA_MODEL`. Structured JSON replies use Ollama’s `format` option.
 - **Groq**: set `LLM_PROVIDER=groq` and `GROQ_API_KEY`. For JSON flashcard payloads, Groq uses `response_format: { type: "json_object" }` when generation requests JSON mode.
-- The optional `model` field on `POST .../flashcards/generate` overrides the default model for whichever provider is active.
+- The optional `model` field on `POST .../flashcards/generate` and `POST .../flashcards/generate-from-file` overrides the default model for whichever provider is active.
+- Document upload uses `pdf-parse` (PDF), `mammoth` (DOCX), and UTF-8 decoding (TXT). See `src/helpers/document-text-extraction.helper.ts`.
 
 ## Running the Project
 
@@ -1165,6 +1167,67 @@ If `persist=false` (or omitted), the response shape is:
 
 ---
 
+### `POST /subjects/:id/flashcards/generate-from-file`
+
+- **Description**: uploads a document (PDF, DOCX, or TXT), extracts text in memory, and generates flashcards via the configured LLM. The file is **not** persisted. Can persist generated cards into the subject.
+- **Auth**: required.
+- **Content-Type**: `multipart/form-data`
+
+#### Example request (curl)
+
+```bash
+curl -X POST "http://localhost:3000/subjects/ef94e4f8-ebaa-4f1a-bebf-2b3be81ad4f5/flashcards/generate-from-file" \
+  -b cookies.txt \
+  -F "file=@/path/to/notes.pdf" \
+  -F "maxCards=8" \
+  -F "persist=false"
+```
+
+#### Multipart fields
+
+| Field | Required | Description |
+|---|---|---|
+| `file` | Yes | PDF (`.pdf`), Word (`.docx`), or plain text (`.txt`) |
+| `maxCards` | No | Integer 1–50 |
+| `model` | No | LLM model override |
+| `persist` | No | `true` / `false` (or string `"true"` / `"false"`) |
+
+#### Example response (JSON)
+
+```json
+{
+  "flashcards": [
+    {
+      "front": "Quais são as três etapas principais da respiração celular?",
+      "back": "Glicólise, ciclo de Krebs e cadeia transportadora de eletrões."
+    }
+  ],
+  "persisted": false,
+  "source": {
+    "filename": "notes.pdf",
+    "mimeType": "application/pdf",
+    "extractedCharCount": 12450,
+    "originalCharCount": 150000,
+    "truncated": true
+  }
+}
+```
+
+When `persist=true`, `flashcards` contains full flashcard entities (same shape as `POST .../generate` with `persist=true`).
+
+#### Status codes
+
+- `200` - generation completed
+- `400` - validation error, unsupported file type, or insufficient extractable text (e.g. scanned PDF)
+- `401` - not authenticated
+- `404` - subject not found or not permitted
+- `413` - file exceeds `FILE_UPLOAD_MAX_BYTES`
+- `502` - AI generation failed
+
+Further details: `src/flashcard/flashcard.docs.md`.
+
+---
+
 ### `GET /subjects/:id/flashcards/:flashcardId`
 
 - **Description**: gets a flashcard by id (must belong to the authenticated user).
@@ -1414,7 +1477,7 @@ No rate limiter is currently configured in this API.
 Production recommendation:
 
 - apply per-IP and per-user limits at the gateway/API gateway;
-- use stricter limits for `POST /auth/login` and `POST /subjects/:id/flashcards/generate`.
+- use stricter limits for `POST /auth/login`, `POST /subjects/:id/flashcards/generate`, and `POST /subjects/:id/flashcards/generate-from-file`.
 
 ## Logging and Monitoring
 
