@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(env.siteUrl),
   title: {
     default: `${env.siteName} – Study smarter with AI flashcards`,
     template: `%s · ${env.siteName}`,
@@ -32,6 +33,21 @@ export const metadata: Metadata = {
     "study",
     "learning",
   ],
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    siteName: env.siteName,
+    title: `${env.siteName} – Study smarter with AI flashcards`,
+    description:
+      "AI-generated flashcards with science-backed spaced repetition. Create subjects, generate decks, and review smarter.",
+    url: env.siteUrl,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${env.siteName} – Study smarter with AI flashcards`,
+    description:
+      "AI-generated flashcards with science-backed spaced repetition.",
+  },
   verification: {
     google: process.env.GOOGLE_VERIFICATION_ID,
   },
