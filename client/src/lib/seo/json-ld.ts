@@ -1,9 +1,10 @@
 import type { SeoPageContent } from "@/content/seo/types";
 import { CLUSTER_LABELS } from "@/lib/seo/constants";
 import { env } from "@/lib/env";
+import { absoluteUrl } from "@/lib/seo/url";
 
 export function buildArticleJsonLd(page: SeoPageContent) {
-  const url = `${env.siteUrl}/${page.slug}`;
+  const url = absoluteUrl(`/${page.slug}`);
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -47,19 +48,19 @@ export function buildBreadcrumbJsonLd(page: SeoPageContent) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: env.siteUrl,
+        item: absoluteUrl("/"),
       },
       {
         "@type": "ListItem",
         position: 2,
         name: clusterLabel,
-        item: `${env.siteUrl}/guides#${page.cluster}`,
+        item: `${absoluteUrl("/guides")}#${page.cluster}`,
       },
       {
         "@type": "ListItem",
         position: 3,
         name: page.h1,
-        item: `${env.siteUrl}/${page.slug}`,
+        item: absoluteUrl(`/${page.slug}`),
       },
     ],
   };

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import type { SeoPageContent } from "@/content/seo/types";
-import { env } from "@/lib/env";
+import type { SeoPageContent } from "../../content/seo/types";
+import { env } from "../env";
+import { absoluteUrl } from "./url";
 
 export function buildSeoMetadata(page: SeoPageContent): Metadata {
-  const canonical = `${env.siteUrl}/${page.slug}`;
+  const canonical = absoluteUrl(`/${page.slug}`);
   const keywords = [page.primaryKeyword, ...page.secondaryKeywords];
 
   return {
