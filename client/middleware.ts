@@ -3,6 +3,9 @@ import { NextResponse, type NextRequest } from "next/server";
 const COOKIE_NAME = process.env.NEXT_PUBLIC_AUTH_COOKIE_NAME ?? "access_token";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
+const CANONICAL_HOST = "myremynd.com";
+const WWW_HOST = `www.${CANONICAL_HOST}`;
+
 const PROTECTED_PREFIXES = ["/dashboard", "/subjects", "/settings"];
 const AUTH_PAGES = ["/login", "/register"];
 
@@ -17,7 +20,22 @@ function isApiSameOrigin(request: NextRequest): boolean {
   }
 }
 
+function redirectWwwToApex(request: NextRequest): NextResponse | null {
+  const host = request.headers.get("host")?.split(":")[0]?.toLowerCase();
+  if (host !== WWW_HOST) return null;
+
+  const url = request.nextUrl.clone();
+  url.protocol = "https:";
+  url.hostname = CANONICAL_HOST;
+  url.port = "";
+  // Preserve pathname and query string via cloned nextUrl.
+  return NextResponse.redirect(url, 308);
+}
+
 export function middleware(request: NextRequest) {
+  const wwwRedirect = redirectWwwToApex(request);
+  if (wwwRedirect) return wwwRedirect;
+
   if (!isApiSameOrigin(request)) {
     // Cross-origin auth cookie is not visible to the frontend domain in middleware.
     return NextResponse.next();
@@ -48,10 +66,10 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/dashboard/:path*",
-    "/subjects/:path*",
-    "/settings/:path*",
-    "/login",
-    "/register",
+    /*
+     * Run on all app routes so www → apex applies site-wide.
+     * Skip Next internals and common static assets.
+     */
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };
