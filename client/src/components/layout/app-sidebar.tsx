@@ -69,7 +69,7 @@ export function AppSidebar() {
           AI generation
         </div>
         <p className="mt-1 text-xs text-muted-foreground">
-          Paste any text and let SmartFlashcards craft a deck for you in seconds.
+          Paste any text and let MyRemynd craft a deck for you in seconds.
         </p>
       </div>
     </aside>

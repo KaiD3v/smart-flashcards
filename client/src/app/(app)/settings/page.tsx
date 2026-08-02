@@ -105,7 +105,7 @@ export default function SettingsPage() {
               <div>
                 <h2 className="text-base font-semibold">Profile</h2>
                 <p className="text-xs text-muted-foreground">
-                  Update how you appear in SmartFlashcards.
+                  Update how you appear in MyRemynd.
                 </p>
               </div>
             </div>
