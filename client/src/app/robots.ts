@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { env } from "@/lib/env";
+import { absoluteUrl } from "@/lib/seo/url";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/dashboard", "/settings", "/subjects/"],
     },
-    sitemap: `${env.siteUrl}/sitemap.xml`,
+    sitemap: absoluteUrl("/sitemap.xml"),
   };
 }
