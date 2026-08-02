@@ -15,10 +15,10 @@ export const howSpacedRepetitionWorks: SeoPageContent = {
   searchIntent: "informational",
   seoTitle: "How Spaced Repetition Works: Step by Step",
   metaDescription:
-    "See how spaced repetition schedules reviews, adapts intervals, and uses FSRS in SmartFlashcards to maximize memory retention with less study time.",
+    "See how spaced repetition schedules reviews, adapts intervals, and uses FSRS in MyRemynd to maximize memory retention with less study time.",
   h1: "How Spaced Repetition Works",
   intro:
-    "Spaced repetition works by timing each review to coincide with the moment your memory of a fact starts to weaken. Successful recall extends the interval until the next review. Failed recall shortens it. Modern algorithms like FSRS model this cycle mathematically so software can predict the ideal review date for every card in your deck. SmartFlashcards applies that process automatically from the first card you create.",
+    "Spaced repetition works by timing each review to coincide with the moment your memory of a fact starts to weaken. Successful recall extends the interval until the next review. Failed recall shortens it. Modern algorithms like FSRS model this cycle mathematically so software can predict the ideal review date for every card in your deck. MyRemynd applies that process automatically from the first card you create.",
   sections: [
     section("review-cycle", "The Basic Review Cycle", 2, [
       "Every spaced repetition session follows the same loop. You encounter a prompt, attempt to retrieve the answer from memory, reveal the correct answer, and rate how well you recalled it. That rating feeds the scheduler, which assigns a new due date before moving to the next card.",
@@ -30,27 +30,27 @@ export const howSpacedRepetitionWorks: SeoPageContent = {
     ]),
     section("fsrs-model", "Inside the FSRS Model", 2, [
       "FSRS tracks two key parameters for each card: stability, which reflects how long the memory is likely to last, and difficulty, which reflects how inherently hard the item is for you. Each review updates both values based on your rating and the elapsed time since the last review.",
-      "The algorithm predicts the probability that you will recall a card on any given day. SmartFlashcards schedules reviews when that probability drops to a target threshold, typically around ninety percent. Cards above the threshold stay dormant. Cards below it surface in your daily queue.",
+      "The algorithm predicts the probability that you will recall a card on any given day. MyRemynd schedules reviews when that probability drops to a target threshold, typically around ninety percent. Cards above the threshold stay dormant. Cards below it surface in your daily queue.",
     ]),
     section("ratings-impact", "What Your Ratings Tell the Scheduler", 2, [
       "Again means you did not recall the answer. The card returns almost immediately, often within minutes or hours during the same session. Hard means you recalled with serious effort or partial error. Good means comfortable recall. Easy means instant, effortless recall.",
       "These four ratings give FSRS enough signal to adjust intervals precisely. Consistent honest ratings produce better schedules than always clicking Good. If you guess correctly but feel uncertain, Hard is the accurate choice. The algorithm learns your patterns only when your input reflects real memory strength.",
     ]),
     section("daily-queue", "How the Daily Queue Is Built", 2, [
-      "Each morning SmartFlashcards calculates which cards have due dates on or before today. Those cards form your review queue, sorted so overdue items appear first. New cards may also enter the queue up to a daily limit you control, preventing overload when building a large deck.",
+      "Each morning MyRemynd calculates which cards have due dates on or before today. Those cards form your review queue, sorted so overdue items appear first. New cards may also enter the queue up to a daily limit you control, preventing overload when building a large deck.",
       "Completing the queue takes the guesswork out of studying. You open the app, work through due cards, and stop when the count reaches zero. There is no decision fatigue about what to study next. FSRS has already prioritized the material most at risk of being forgotten.",
     ]),
     section("comparison-sm2", "FSRS Compared to Older Algorithms", 2, [
       "SM-2, the classic SuperMemo algorithm adopted by many flashcard tools, uses fixed multipliers to grow intervals. It works but treats all learners identically and ignores the elapsed time between reviews in nuanced ways. FSRS was trained on large datasets of real review outcomes to produce more accurate predictions.",
       "Practical benefits include fewer total reviews to reach the same retention target and smoother daily workloads. Students migrating from other tools often notice that FSRS reduces review spikes before exams because intervals adapt to their actual performance rather than following rigid formulas.",
     ]),
-    section("implementation", "How SmartFlashcards Implements the Process", 2, [
-      "When you generate flashcards from a PDF or paste notes into SmartFlashcards, each card receives an initial FSRS state with a due date of today or tomorrow. Your first review establishes baseline stability and difficulty. Every subsequent rating refines those values in the background without any action on your part.",
+    section("implementation", "How MyRemynd Implements the Process", 2, [
+      "When you generate flashcards from a PDF or paste notes into MyRemynd, each card receives an initial FSRS state with a due date of today or tomorrow. Your first review establishes baseline stability and difficulty. Every subsequent rating refines those values in the background without any action on your part.",
       "The entire pipeline, from AI card generation to FSRS scheduling to daily review UI, lives in one web application. You do not export decks, install plugins, or sync databases manually. The system handles the mechanics so you can focus on the cognitive work of retrieval and learning.",
     ]),
     section("troubleshooting", "When Scheduling Feels Wrong", 2, [
       "If a card you know well keeps appearing too often, you may be rating Hard when Easy is accurate. FSRS trusts your input. Adjust ratings to reflect genuine recall difficulty and intervals will stretch appropriately within a few review cycles.",
-      "If your daily queue feels overwhelming after a break, complete the oldest due cards first over several shorter sessions rather than one marathon. FSRS recalibrates as you catch up. SmartFlashcards prioritizes overdue items so the most at-risk memories get attention before intervals slip further.",
+      "If your daily queue feels overwhelming after a break, complete the oldest due cards first over several shorter sessions rather than one marathon. FSRS recalibrates as you catch up. MyRemynd prioritizes overdue items so the most at-risk memories get attention before intervals slip further.",
       "New users sometimes review ahead of schedule by browsing the full deck. Trust the due queue instead. Cards not yet due are still well retained; reviewing them early wastes time you could spend on material FSRS has identified as fading.",
     ]),
   ],
@@ -58,7 +58,7 @@ export const howSpacedRepetitionWorks: SeoPageContent = {
     {
       question: "What data does FSRS store for each card?",
       answer:
-        "FSRS tracks due date, stability, difficulty, review count, lapse count, and card state. SmartFlashcards persists these values so your schedule survives across sessions and devices.",
+        "FSRS tracks due date, stability, difficulty, review count, lapse count, and card state. MyRemynd persists these values so your schedule survives across sessions and devices.",
     },
     {
       question: "Why do intervals not follow a fixed pattern like 1-3-7-14?",
@@ -68,7 +68,7 @@ export const howSpacedRepetitionWorks: SeoPageContent = {
     {
       question: "Can I see when a card will next be due?",
       answer:
-        "SmartFlashcards displays due status and scheduling information in the review interface so you understand how your ratings affect future intervals.",
+        "MyRemynd displays due status and scheduling information in the review interface so you understand how your ratings affect future intervals.",
     },
     {
       question: "Does the algorithm change if I skip days?",

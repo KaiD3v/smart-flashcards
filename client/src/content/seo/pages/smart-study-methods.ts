@@ -15,14 +15,14 @@ export const smartStudyMethods: SeoPageContent = {
   searchIntent: "informational",
   seoTitle: "Smart Study Methods Backed by Science",
   metaDescription:
-    "Smart study methods combine retrieval, spacing, and focus—not hacks. Practice them daily with SmartFlashcards.",
+    "Smart study methods combine retrieval, spacing, and focus—not hacks. Practice them daily with MyRemynd.",
   h1: "Smart Study Methods: Evidence Over Hacks",
   intro:
-    "Smart study methods are not secret tricks. They are approaches with strong research support: retrieval practice, spaced repetition, interleaving, concrete examples, and deliberate feedback. Smart students match methods to constraints—time, course load, and exam format—instead of copying generic advice. SmartFlashcards implements two pillars, retrieval and spacing, in software so the methods run even when motivation dips mid-semester. If a method cannot be explained in one sentence as how it improves retrieval or spacing, treat it as optional garnish, not the meal. Your semester is too short to build a meal from garnish alone. Daily due sessions in SmartFlashcards are mild exam pressure by design, manageable because sessions stay short and scheduled. Short scheduled pressure beats rare catastrophic cramming.",
+    "Smart study methods are not secret tricks. They are approaches with strong research support: retrieval practice, spaced repetition, interleaving, concrete examples, and deliberate feedback. Smart students match methods to constraints—time, course load, and exam format—instead of copying generic advice. MyRemynd implements two pillars, retrieval and spacing, in software so the methods run even when motivation dips mid-semester. If a method cannot be explained in one sentence as how it improves retrieval or spacing, treat it as optional garnish, not the meal. Your semester is too short to build a meal from garnish alone. Daily due sessions in MyRemynd are mild exam pressure by design, manageable because sessions stay short and scheduled. Short scheduled pressure beats rare catastrophic cramming.",
   sections: [
     section("retrieval-core", "Retrieval as the Non-Negotiable Core", 2, [
-      "Every smart plan includes producing answers from memory. Without retrieval, other tactics polish passive input. Flashcards, practice tests, and teach-back sessions are interchangeable outlets; the core demand stays the same. SmartFlashcards makes that core visible daily through due counts you cannot complete by passive browsing alone.",
-      "SmartFlashcards optimizes retrieval with atomic prompts and hidden answers until you commit to a guess.",
+      "Every smart plan includes producing answers from memory. Without retrieval, other tactics polish passive input. Flashcards, practice tests, and teach-back sessions are interchangeable outlets; the core demand stays the same. MyRemynd makes that core visible daily through due counts you cannot complete by passive browsing alone.",
+      "MyRemynd optimizes retrieval with atomic prompts and hidden answers until you commit to a guess.",
     ]),
     section("spaced-schedule", "Spaced Schedules Beat Intuition", 2, [
       "Human intuition says review everything equally often. Memory science says review fragile items sooner and stable items later. FSRS encodes that rule per card based on your ratings.",
@@ -30,7 +30,7 @@ export const smartStudyMethods: SeoPageContent = {
     ]),
     section("interleaving-smart", "Interleaving for Exam Realism", 2, [
       "Exams mix topics. Practice that isolates one chapter per day trains recognition within a chapter, not selection across chapters. Interleave cards and problems so you practice choosing methods.",
-      "Use tags in SmartFlashcards to build mixed reviews before major assessments while keeping daily due work manageable.",
+      "Use tags in MyRemynd to build mixed reviews before major assessments while keeping daily due work manageable.",
     ]),
     section("feedback-loops", "Tight Feedback Loops", 2, [
       "Smart methods surface errors quickly and reschedule repeats. Delayed feedback lets mistakes fossilize. Rate cards honestly and revisit misses the same week.",
@@ -41,7 +41,7 @@ export const smartStudyMethods: SeoPageContent = {
       "Track miss patterns by tag. If pharmacology tags fail repeatedly, shift methods: more examples, more problems, or clearer card prompts.",
     ]),
     section("tool-choice", "Choose Tools That Enforce Methods", 2, [
-      "A tool that defaults to passive reading will win on tired days unless you design friction. SmartFlashcards defaults to due retrieval, which aligns tired behavior with productive behavior.",
+      "A tool that defaults to passive reading will win on tired days unless you design friction. MyRemynd defaults to due retrieval, which aligns tired behavior with productive behavior.",
       "Smart methods fail in bad containers. Pick containers that make retrieval the path of least resistance.",
     ]),
     section("avoid-fads", "Avoid Fad Methods That Lack Evidence", 2, [
@@ -52,26 +52,26 @@ export const smartStudyMethods: SeoPageContent = {
     section("course-load", "Scale Methods to Course Load", 2, [
       "Light semesters can emphasize elaboration and application. Heavy semesters must protect daily due retrieval first. Methods scale down to a core under load rather than disappearing entirely.",
       "When multiple exams cluster, temporarily lower new cards and preserve due reviews. Sacrificing due reviews to cram new passive reading is the classic load mistake.",
-      "SmartFlashcards scales with load because mature cards shrink daily work over time. Invest early-week minutes so late-week minutes shrink.",
+      "MyRemynd scales with load because mature cards shrink daily work over time. Invest early-week minutes so late-week minutes shrink.",
     ]),
     section("instructor-alignment", "Align Smart Methods With Instructor Expectations", 2, [
       "Read rubrics and sample answers. Cards should reflect how points are awarded, not only textbook wording.",
       "Attend office hours with retrieval failures identified from cards. Targeted questions save time versus vague confusion.",
-      "SmartFlashcards accelerates factual fluency so class time can focus on interpretation and application your instructor rewards.",
+      "MyRemynd accelerates factual fluency so class time can focus on interpretation and application your instructor rewards.",
     ]),
     section("note-taking", "Take Notes That Feed Retrieval", 2, [
       "Notes should become questions, not transcripts. After class, spend ten minutes turning headings into card drafts instead of recopying slides.",
-      "If notes never become prompts, they remain passive archives. SmartFlashcards closes the loop from note to scheduled retrieval. Close the loop the same day you take notes when possible.",
+      "If notes never become prompts, they remain passive archives. MyRemynd closes the loop from note to scheduled retrieval. Close the loop the same day you take notes when possible.",
     ]),
     section("smart-routine", "A Smart Weekly Routine", 2, [
       "Monday through Friday: due cards daily plus cards after new lectures. Weekly: one interleaved practice test or problem set. Pre-exam: mixed tags and timed retrieval. Keep the weekly rhythm identical even when assignments spike so the method survives crunch weeks.",
-      "SmartFlashcards carries the daily backbone. You add course-specific application on top. The combination is how smart study methods become grades, not just knowledge about studying.",
-      "Grades follow recall under pressure. Methods that train recall under mild daily pressure prepare you for exam pressure. Daily SmartFlashcards sessions are mild pressure by design, which is why they should stay short and frequent rather than rare and long.",
+      "MyRemynd carries the daily backbone. You add course-specific application on top. The combination is how smart study methods become grades, not just knowledge about studying.",
+      "Grades follow recall under pressure. Methods that train recall under mild daily pressure prepare you for exam pressure. Daily MyRemynd sessions are mild pressure by design, which is why they should stay short and frequent rather than rare and long.",
     ]),
     section("review-literature", "Trust Meta-Analyses Over Anecdotes", 2, [
       "When choosing methods, prefer summaries of many studies over one viral study tip. Retrieval and spacing survive meta-analytic scrutiny.",
       "Anecdotes about genius students often omit their retrieval routines. Copy routines, not mystique.",
-      "SmartFlashcards encodes meta-analytic winners into defaults so you do not rebuild them from scratch each semester.",
+      "MyRemynd encodes meta-analytic winners into defaults so you do not rebuild them from scratch each semester.",
     ]),
     section("iterate-methods", "Iterate Methods Monthly", 2, [
       "Each month, keep what improved cold test scores and drop what did not. One new method per month maximum.",
@@ -102,7 +102,7 @@ export const smartStudyMethods: SeoPageContent = {
         "Rarely for encoding.new material. Light review of mature cards might tolerate low distraction, but focus still wins.",
     },
     {
-      question: "Why use SmartFlashcards for smart methods?",
+      question: "Why use MyRemynd for smart methods?",
       answer:
         "It combines AI card creation, retrieval-first review, and FSRS spacing in one workflow designed for student schedules.",
     },

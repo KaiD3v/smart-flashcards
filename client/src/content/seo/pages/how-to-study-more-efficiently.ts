@@ -15,18 +15,18 @@ export const howToStudyMoreEfficiently: SeoPageContent = {
   searchIntent: "informational",
   seoTitle: "How to Study More Efficiently Every Week",
   metaDescription:
-    "Study more efficiently with focused blocks, active recall, and spaced reviews in SmartFlashcards—less time, better results.",
+    "Study more efficiently with focused blocks, active recall, and spaced reviews in MyRemynd—less time, better results.",
   h1: "How to Study More Efficiently Without Burning Out",
   intro:
-    "Studying more efficiently is not about racing through more pages. It is about choosing methods with the highest memory return per minute and protecting attention so those methods actually run. Efficiency comes from retrieval, spacing, clear priorities, and tools that remove busywork. This guide shows how to redesign a week around those levers. SmartFlashcards handles card creation and FSRS scheduling so your energy goes to answering questions, not administrating them. Efficiency shows up as calmer exam weeks: fewer all-nighters, fewer re-learned units, and more confidence on old lectures because spaced retrieval kept them warm. If your calendar is full but recall is empty, the bottleneck is method, not effort. Small weekly adjustments beat dramatic overhauls that never stick.",
+    "Studying more efficiently is not about racing through more pages. It is about choosing methods with the highest memory return per minute and protecting attention so those methods actually run. Efficiency comes from retrieval, spacing, clear priorities, and tools that remove busywork. This guide shows how to redesign a week around those levers. MyRemynd handles card creation and FSRS scheduling so your energy goes to answering questions, not administrating them. Efficiency shows up as calmer exam weeks: fewer all-nighters, fewer re-learned units, and more confidence on old lectures because spaced retrieval kept them warm. If your calendar is full but recall is empty, the bottleneck is method, not effort. Small weekly adjustments beat dramatic overhauls that never stick.",
   sections: [
     section("audit-time", "Audit Where Your Hours Go", 2, [
       "Track one typical week: how much time is passive reading, how much is retrieval, how much is setup like formatting notes. Most students discover a large passive slice that feels like work but barely moves retention.",
-      "Cut the lowest-yield slice first, not sleep. Replace thirty passive minutes with thirty retrieval minutes in SmartFlashcards and compare exam recall two weeks later.",
+      "Cut the lowest-yield slice first, not sleep. Replace thirty passive minutes with thirty retrieval minutes in MyRemynd and compare exam recall two weeks later.",
     ]),
     section("priority-queue", "Study From a Priority Queue", 2, [
       "Efficiency dies when everything feels equally urgent. Build a queue: due reviews first, then new cards from recent lectures, then optional enrichment. Due reviews protect old knowledge; new cards capture fresh gaps.",
-      "SmartFlashcards surfaces due work automatically. You open the app and start, instead of deciding what to read next for twenty minutes.",
+      "MyRemynd surfaces due work automatically. You open the app and start, instead of deciding what to read next for twenty minutes.",
     ]),
     section("timeboxing", "Timebox Sessions and Stop on Time", 2, [
       "Open sessions with a timer. Twenty-five focused minutes plus a five-minute break prevents drift. Stopping on time trains honesty: you cannot infinite re-read your way to safety.",
@@ -34,7 +34,7 @@ export const howToStudyMoreEfficiently: SeoPageContent = {
     ]),
     section("environment", "Design a Low-Friction Environment", 2, [
       "Keep study tools one click away. Bookmark your deck, use the same desk, and keep phone in another room. Friction determines whether a habit runs on tired days.",
-      "SmartFlashcards works in the browser without manual sync setup, which removes friction that kills efficient plans on busy weekdays.",
+      "MyRemynd works in the browser without manual sync setup, which removes friction that kills efficient plans on busy weekdays.",
     ]),
     section("active-methods", "Anchor on Active Methods", 2, [
       "Efficiency maps closely to active recall and spaced repetition. Passive methods scale poorly with course size. Active methods scale because schedulers compress mature material into quick reviews.",
@@ -57,15 +57,15 @@ export const howToStudyMoreEfficiently: SeoPageContent = {
     section("digital-notes", "Stop Over-Optimizing Digital Notes", 2, [
       "Pretty notes rarely equal efficient study unless they feed retrieval. Cap note beautification time and redirect saved time to due cards.",
       "If notes are searchable, use search to locate weak topics, then card those topics. Notes become indexes, not second textbooks.",
-      "SmartFlashcards turns note highlights into questions faster than manual reformatting, which is where efficiency actually appears.",
+      "MyRemynd turns note highlights into questions faster than manual reformatting, which is where efficiency actually appears.",
     ]),
     section("office-hours", "Use Office Hours Efficiently", 2, [
       "Arrive with three retrieval failures from cards, not with general confusion. Tutors resolve targeted gaps faster than broad re-teaching.",
       "Record corrected explanations as one-line card backs so the fix enters spaced review instead of vanishing after the appointment.",
     ]),
-    section("efficient-stack", "Your Efficient Stack in SmartFlashcards", 2, [
+    section("efficient-stack", "Your Efficient Stack in MyRemynd", 2, [
       "Daily: clear due cards. Weekly: add cards from new material and skim tags you miss often. Monthly: delete or merge duplicate cards that waste seconds.",
-      "Efficiency is a maintenance rhythm, not a one-time hack. SmartFlashcards keeps the rhythm visible through due counts and review history so you adjust before exams, not during them.",
+      "Efficiency is a maintenance rhythm, not a one-time hack. MyRemynd keeps the rhythm visible through due counts and review history so you adjust before exams, not during them.",
       "When due counts trend down while grades hold steady, you have found real efficiency. Celebrate that trend instead of chasing more passive hours.",
     ]),
     section("metrics", "Track Efficiency With Simple Metrics", 2, [
@@ -89,7 +89,7 @@ export const howToStudyMoreEfficiently: SeoPageContent = {
     {
       question: "What is the first change to make?",
       answer:
-        "Replace passive re-reading with a daily due review in SmartFlashcards. It is the highest leverage single habit.",
+        "Replace passive re-reading with a daily due review in MyRemynd. It is the highest leverage single habit.",
     },
     {
       question: "How do I avoid efficient procrastination?",

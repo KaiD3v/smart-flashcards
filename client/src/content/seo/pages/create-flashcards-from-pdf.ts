@@ -15,10 +15,10 @@ export const createFlashcardsFromPdf: SeoPageContent = {
   searchIntent: "transactional",
   seoTitle: "Create Flashcards from PDF in Minutes",
   metaDescription:
-    "Create flashcards from PDF, DOCX, or TXT in SmartFlashcards. Edit AI-drafted cards and study with FSRS spaced repetition.",
+    "Create flashcards from PDF, DOCX, or TXT in MyRemynd. Edit AI-drafted cards and study with FSRS spaced repetition.",
   h1: "Create Flashcards from PDF for Every Course You Take",
   intro:
-    "Creating flashcards from a PDF used to mean split-screen misery: PDF on the left, typing on the right, weekend gone. Modern study tools flip that script by reading your document and proposing cards you refine—not replace. SmartFlashcards helps you create flashcards from PDF, DOCX, or TXT uploads, organize them by subject, and review with FSRS scheduling that prioritizes what you forget. Whether you are in your first semester or preparing for licensing exams, the creation workflow stays the same: upload, edit, review daily. The students who benefit most treat card creation like laundry—small loads all week—not a single mountain before finals.",
+    "Creating flashcards from a PDF used to mean split-screen misery: PDF on the left, typing on the right, weekend gone. Modern study tools flip that script by reading your document and proposing cards you refine—not replace. MyRemynd helps you create flashcards from PDF, DOCX, or TXT uploads, organize them by subject, and review with FSRS scheduling that prioritizes what you forget. Whether you are in your first semester or preparing for licensing exams, the creation workflow stays the same: upload, edit, review daily. The students who benefit most treat card creation like laundry—small loads all week—not a single mountain before finals.",
   sections: [
     section("who-needs", "Who should create flashcards from PDFs?", 2, [
       "Undergraduates juggling multiple lecture PDFs each week benefit because creation time drops from hours to minutes. Graduate students annotating research papers can turn key findings into recall prompts without retyping quotes. Medical and nursing students facing enormous content volumes use PDF flashcards to drill terminology and protocols systematically.",
@@ -29,21 +29,21 @@ export const createFlashcardsFromPdf: SeoPageContent = {
       "Keep answers short enough to grade yourself quickly, but complete enough to be unambiguous. If the PDF uses abbreviations, define them once in a dedicated card before using shorthand elsewhere. Link related cards by consistent tags like 'Week 4' or 'Midterm 2' so you can study in clusters.",
     ]),
     section("workflow", "A repeatable weekly creation workflow", 2, [
-      "After each lecture, download the PDF while details are fresh. Upload to SmartFlashcards the same day or within forty-eight hours. Spend twenty to forty minutes editing generated cards while you still remember what the professor emphasized orally—those hints rarely appear in the PDF alone.",
+      "After each lecture, download the PDF while details are fresh. Upload to MyRemynd the same day or within forty-eight hours. Spend twenty to forty minutes editing generated cards while you still remember what the professor emphasized orally—those hints rarely appear in the PDF alone.",
       "Run a short review session immediately to seed FSRS data. Later in the week, add manual cards for homework problems you missed. Before the exam, filter by tags and do two focused passes on weak tags only. This rhythm beats binge-creating cards once per term.",
     ]),
     section("docx-txt", "Creating from DOCX and TXT, not just PDF", 2, [
       "Not every professor distributes PDFs. DOCX uploads preserve bullet lists and definitions many students paste from OneNote or Google Docs exports. TXT files work well when you summarize readings yourself—the summary is already distilled, so card generation focuses on the highest-yield sentences.",
-      "SmartFlashcards treats all three formats as first-class inputs so your creation habit does not depend on converting files. Less friction means you actually maintain the habit when midterms hit.",
+      "MyRemynd treats all three formats as first-class inputs so your creation habit does not depend on converting files. Less friction means you actually maintain the habit when midterms hit.",
     ]),
     section("mistakes", "Common mistakes when building PDF decks", 2, [
       "Making cards too long turns reviews into re-reading, which defeats the purpose. Copying entire paragraphs from the PDF produces recognition, not recall. Creating hundreds of near-duplicate cards burns review time—merge them. Skipping edits on AI drafts lets subtle errors become repeated mistakes.",
       "Waiting until exam week to create everything at once overloads memory and morale. Spread creation across the term so FSRS has time to space repetitions meaningfully.",
     ]),
     section("organize", "Organize subjects so PDF decks stay findable", 2, [
-      "Mirror your course structure in SmartFlashcards subjects: course code, instructor, or term. Name decks by lecture date or chapter. When finals arrive, you will open the right pile instantly instead of scrolling through a generic 'Biology' blob containing three semesters of experiments.",
+      "Mirror your course structure in MyRemynd subjects: course code, instructor, or term. Name decks by lecture date or chapter. When finals arrive, you will open the right pile instantly instead of scrolling through a generic 'Biology' blob containing three semesters of experiments.",
     ]),
-    section("get-started", "Create your first PDF deck in SmartFlashcards", 2, [
+    section("get-started", "Create your first PDF deck in MyRemynd", 2, [
       "Sign up, create a subject for your hardest class this term, and upload the next PDF on your syllabus. Edit the first batch of cards tonight, complete one review session, and schedule tomorrow's ten-minute follow-up. You will have a concrete deck before the week ends—proof the workflow fits real student schedules.",
     ]),
     section("collaboration", "Studying with classmates after you create cards", 2, [
@@ -63,7 +63,7 @@ export const createFlashcardsFromPdf: SeoPageContent = {
     {
       question: "How do I create flashcards from a PDF for free?",
       answer:
-        "Create a SmartFlashcards account and upload your PDF, DOCX, or TXT to start. Review the generated cards, edit as needed, and use the built-in study session to begin spaced repetition.",
+        "Create a MyRemynd account and upload your PDF, DOCX, or TXT to start. Review the generated cards, edit as needed, and use the built-in study session to begin spaced repetition.",
     },
     {
       question: "Should I create cards while reading the PDF?",

@@ -15,18 +15,18 @@ export const activeLearningMethods: SeoPageContent = {
   searchIntent: "informational",
   seoTitle: "Active Learning Methods That Actually Stick",
   metaDescription:
-    "Explore active learning methods from retrieval practice to teaching back, and automate flashcards with SmartFlashcards.",
+    "Explore active learning methods from retrieval practice to teaching back, and automate flashcards with MyRemynd.",
   h1: "Active Learning Methods for Deeper Understanding",
   intro:
-    "Active learning methods ask you to process material, not only absorb it. In classrooms, that might mean discussion, problem solving, or peer teaching. In solo study, it means retrieval, elaboration, and applying ideas in new contexts. The unifying theme is effortful engagement: your brain must work with the content, not glide over it. This page maps the most evidence-backed methods and shows how flashcard-based retrieval fits alongside them. SmartFlashcards lowers the friction of daily retrieval so active methods survive busy weeks. You do not need to adopt every method at once. Pick retrieval plus one complementary technique, run it for two weeks, and measure recall on old units before adding more. That sequencing prevents the common trap of buying new planners and apps while leaving memory unchanged.",
+    "Active learning methods ask you to process material, not only absorb it. In classrooms, that might mean discussion, problem solving, or peer teaching. In solo study, it means retrieval, elaboration, and applying ideas in new contexts. The unifying theme is effortful engagement: your brain must work with the content, not glide over it. This page maps the most evidence-backed methods and shows how flashcard-based retrieval fits alongside them. MyRemynd lowers the friction of daily retrieval so active methods survive busy weeks. You do not need to adopt every method at once. Pick retrieval plus one complementary technique, run it for two weeks, and measure recall on old units before adding more. That sequencing prevents the common trap of buying new planners and apps while leaving memory unchanged.",
   sections: [
     section("retrieval-first", "Retrieval Practice as the Foundation", 2, [
       "Retrieval practice sits at the center of active learning because it directly trains exam skills. Methods like the Feynman technique, blank-page testing, and flashcards are variations on the same demand: produce the answer yourself. Start here before layering fancier strategies.",
-      "SmartFlashcards specializes in scalable retrieval. Lectures become cards, cards become daily due work, and FSRS handles spacing. Other methods complement this foundation rather than replacing it.",
+      "MyRemynd specializes in scalable retrieval. Lectures become cards, cards become daily due work, and FSRS handles spacing. Other methods complement this foundation rather than replacing it.",
     ]),
     section("elaboration", "Elaboration and Connective Questions", 2, [
       "Elaboration means explaining how a fact relates to something you already know. Ask why a mechanism matters, how two theories differ, or when a rule fails. Elaborative prompts make strong flashcard backs and deepen memory beyond bare definitions.",
-      "When you miss a card in SmartFlashcards, add one sentence of elaboration in the explanation field. That extra connective tissue speeds understanding on the next retrieval.",
+      "When you miss a card in MyRemynd, add one sentence of elaboration in the explanation field. That extra connective tissue speeds understanding on the next retrieval.",
     ]),
     section("interleaving", "Interleaving Mixed Topics", 2, [
       "Blocked practice repeats one topic many times in a row. Interleaving mixes topics so you must choose the right approach each time, which mirrors exams. Mix cards from different lectures in one session or shuffle problem types.",
@@ -34,11 +34,11 @@ export const activeLearningMethods: SeoPageContent = {
     ]),
     section("concrete-examples", "Concrete Examples and Applications", 2, [
       "Abstract rules become memorable when tied to examples. For each principle, add a card with a scenario that applies it. In medicine, use patient vignettes; in law, use short fact patterns; in programming, use tiny code snippets.",
-      "SmartFlashcards generation can include example-oriented prompts when you paste case-rich notes. Editing examples to match your course context beats generic samples from the web.",
+      "MyRemynd generation can include example-oriented prompts when you paste case-rich notes. Editing examples to match your course context beats generic samples from the web.",
     ]),
     section("teach-back", "Teach-Back and Peer Explanation", 2, [
       "Teaching forces organization. Explain a concept in plain language for two minutes without notes, then check against your source. Gaps in flow reveal gaps in understanding. Study groups can rotate teach-back roles with the same rules.",
-      "After teach-back, add cards for steps you stumbled on. The method is social; the consolidation can still be private in your SmartFlashcards deck.",
+      "After teach-back, add cards for steps you stumbled on. The method is social; the consolidation can still be private in your MyRemynd deck.",
     ]),
     section("problem-based", "Problem-Based and Case-Based Study", 2, [
       "STEM and professional programs rely on problems and cases as active methods. Attempt without notes, compare to solutions, and diagnose error types. Use flashcards for formulas, definitions, and decision criteria that problems assume you know.",
@@ -57,16 +57,16 @@ export const activeLearningMethods: SeoPageContent = {
     section("assessment-prep", "Prepare for Assessments With Active Methods", 2, [
       "Practice tests are active by definition. Schedule them after spaced retrieval has made facts accessible. Use misses to edit cards, not to panic-highlight entire units.",
       "Essay courses benefit from outline recall: thesis, arguments, counterarguments, evidence. Oral exams benefit from timed teach-back recordings reviewed once for gaps.",
-      "SmartFlashcards supports factual and conceptual fluency; pair it with format-specific practice for your exact assessment type.",
+      "MyRemynd supports factual and conceptual fluency; pair it with format-specific practice for your exact assessment type.",
     ]),
-    section("build-stack", "Build Your Active Stack in SmartFlashcards", 2, [
-      "Choose two methods besides flashcards, such as weekly teach-back and interleaved problem sets. Let SmartFlashcards carry daily retrieval so the stack stays realistic. Track weak tags after reviews and aim elaboration at those tags.",
+    section("build-stack", "Build Your Active Stack in MyRemynd", 2, [
+      "Choose two methods besides flashcards, such as weekly teach-back and interleaved problem sets. Let MyRemynd carry daily retrieval so the stack stays realistic. Track weak tags after reviews and aim elaboration at those tags.",
       "Active learning methods fail when they require heroic time. A thin daily retrieval habit plus weekly deeper methods beats a perfect plan you cannot sustain.",
     ]),
     section("weekly-template", "A Weekly Template for Active Methods", 2, [
-      "Monday through Friday: due SmartFlashcards reviews plus new cards after lectures. Saturday: one elaboration or teach-back block on the week's weakest tags. Sunday: optional problem set or essay outline without notes, then card gaps only.",
+      "Monday through Friday: due MyRemynd reviews plus new cards after lectures. Saturday: one elaboration or teach-back block on the week's weakest tags. Sunday: optional problem set or essay outline without notes, then card gaps only.",
       "The template is boring on purpose. Boring repeats. Exciting all-nighter plans collapse. Adjust durations, not the skeleton, until the skeleton runs for a month.",
-      "Share the template with a study partner so you both quiz each other on the same weekly rhythm. Social accountability plus personal SmartFlashcards queues combines classroom energy with individualized spacing.",
+      "Share the template with a study partner so you both quiz each other on the same weekly rhythm. Social accountability plus personal MyRemynd queues combines classroom energy with individualized spacing.",
     ]),
   ],
   faqs: [
@@ -78,7 +78,7 @@ export const activeLearningMethods: SeoPageContent = {
     {
       question: "How many methods should I use at once?",
       answer:
-        "Start with daily retrieval in SmartFlashcards plus one weekly deeper method. Add more only after the habit sticks for three weeks.",
+        "Start with daily retrieval in MyRemynd plus one weekly deeper method. Add more only after the habit sticks for three weeks.",
     },
     {
       question: "Is group study active learning?",
@@ -91,7 +91,7 @@ export const activeLearningMethods: SeoPageContent = {
         "They complement instruction. Lectures introduce ideas; active methods consolidate them into durable memory and applicable skill.",
     },
     {
-      question: "How does SmartFlashcards support multiple methods?",
+      question: "How does MyRemynd support multiple methods?",
       answer:
         "It automates retrieval and spacing. Use other methods for elaboration and application, then capture gaps as cards for daily review.",
     },

@@ -15,18 +15,18 @@ export const howToRememberMore: SeoPageContent = {
   searchIntent: "informational",
   seoTitle: "How to Remember More From Every Study Hour",
   metaDescription:
-    "Learn how to remember more with retrieval, spacing, sleep, and SmartFlashcards—without longer cram sessions.",
+    "Learn how to remember more with retrieval, spacing, sleep, and MyRemynd—without longer cram sessions.",
   h1: "How to Remember More: Evidence-Based Study Habits",
   intro:
-    "Students who ask how to remember more usually assume the answer is more hours. Often the answer is better encoding: retrieval instead of re-reading, spacing instead of cramming, sleep instead of all-nighters, and focused cards instead of bloated notes. Memory is not a fixed bucket; it is a process you train with the right reps. This guide connects those levers and shows how SmartFlashcards keeps them on a daily schedule so retention rises without doubling your calendar. Treat memory like fitness: short consistent workouts beat rare heroic sessions. A ten-minute due review today does more for next month's exam than three hours of passive highlighting that never tests whether you can answer questions cold.",
+    "Students who ask how to remember more usually assume the answer is more hours. Often the answer is better encoding: retrieval instead of re-reading, spacing instead of cramming, sleep instead of all-nighters, and focused cards instead of bloated notes. Memory is not a fixed bucket; it is a process you train with the right reps. This guide connects those levers and shows how MyRemynd keeps them on a daily schedule so retention rises without doubling your calendar. Treat memory like fitness: short consistent workouts beat rare heroic sessions. A ten-minute due review today does more for next month's exam than three hours of passive highlighting that never tests whether you can answer questions cold.",
   sections: [
     section("retrieval-over-input", "Prioritize Retrieval Over Input", 2, [
       "Every hour spent re-reading has diminishing returns after the first pass. Hours spent retrieving have compounding returns because each successful recall strengthens the pathway you need later. Shift even twenty percent of your time from input to output and you will remember more from the same week.",
-      "SmartFlashcards makes output the default. Cards hide answers until you try. That single design choice prevents the most common memory leak: confusing familiarity with recall.",
+      "MyRemynd makes output the default. Cards hide answers until you try. That single design choice prevents the most common memory leak: confusing familiarity with recall.",
     ]),
     section("spacing-beats-cramming", "Space Reviews to Fight Forgetting", 2, [
       "The forgetting curve drops fast without repeats. Spacing places reviews just before you would lose the memory, which maximizes retention per minute. Cramming can raise tomorrow's score while shrinking next month's recall.",
-      "FSRS in SmartFlashcards calculates those intervals per card. You remember more across the term because old lectures stay in rotation while new ones enter the deck.",
+      "FSRS in MyRemynd calculates those intervals per card. You remember more across the term because old lectures stay in rotation while new ones enter the deck.",
     ]),
     section("sleep-and-consolidation", "Protect Sleep for Consolidation", 2, [
       "Sleep transfers learning from short-term storage into more stable forms. Trading sleep for passive study often reduces net memory. A shorter active recall session plus full sleep beats an all-night highlight marathon.",
@@ -34,7 +34,7 @@ export const howToRememberMore: SeoPageContent = {
     ]),
     section("chunk-and-organize", "Chunk Material Into Meaningful Units", 2, [
       "Random lists are hard to remember. Organize facts into stories, categories, or processes. Cards should reflect those chunks: one mechanism per card, one comparison per card, not entire pages.",
-      "When SmartFlashcards drafts cards from a PDF, reorganize any card that bundles unrelated ideas. Cleaner chunks mean faster retrieval and higher recall rates.",
+      "When MyRemynd drafts cards from a PDF, reorganize any card that bundles unrelated ideas. Cleaner chunks mean faster retrieval and higher recall rates.",
     ]),
     section("attention-quality", "Improve Attention Quality", 2, [
       "Memory needs focus. Split attention during study splits encoding. Silence notifications, shrink session length, and raise intensity. Ten focused minutes of retrieval beat forty distracted minutes of scrolling notes.",
@@ -42,7 +42,7 @@ export const howToRememberMore: SeoPageContent = {
     ]),
     section("test-yourself-often", "Test Yourself Before You Feel Ready", 2, [
       "Waiting until you feel ready to self-test usually means waiting too long. Early testing feels rough but accelerates learning by exposing gaps while context is fresh. Use missed cards as a study map, not as a verdict on ability.",
-      "Pre-exam mixed reviews in SmartFlashcards simulate the discrimination exams require. You remember more because you practiced choosing answers under uncertainty, not only recognizing them in notes.",
+      "Pre-exam mixed reviews in MyRemynd simulate the discrimination exams require. You remember more because you practiced choosing answers under uncertainty, not only recognizing them in notes.",
     ]),
     section("nutrition-stress", "Reduce Stress That Blocks Encoding", 2, [
       "Chronic stress narrows attention and harms consolidation. Memory strategies fail when the nervous system is overloaded. Basic stability—regular meals, movement, social support—raises the ceiling on what retrieval can store.",
@@ -57,11 +57,11 @@ export const howToRememberMore: SeoPageContent = {
     section("long-term-courses", "Remember Across Multi-Term Courses", 2, [
       "Advanced courses assume you still know prerequisites. Keep prerequisite decks on maintenance reviews instead of archiving forever after one final. Maintenance can be a few due cards per week.",
       "When prerequisites fade, advanced lectures feel mysteriously hard. The fix is seldom more passive reading; it is targeted retrieval on the faded layer.",
-      "SmartFlashcards subjects help you separate courses while keeping old decks alive for light spacing.",
+      "MyRemynd subjects help you separate courses while keeping old decks alive for light spacing.",
     ]),
-    section("remember-more-daily", "Remember More With a Daily SmartFlashcards Habit", 2, [
+    section("remember-more-daily", "Remember More With a Daily MyRemynd Habit", 2, [
       "Add cards after each lecture. Clear due cards at the same time daily. Rate honestly. Within three weeks, old material should stay reachable while new material enters without chaos.",
-      "Remembering more is a systems problem. SmartFlashcards supplies the system; your job is showing up for short retrieval reps that the scheduler already prioritized.",
+      "Remembering more is a systems problem. MyRemynd supplies the system; your job is showing up for short retrieval reps that the scheduler already prioritized.",
     ]),
     section("verify-memory", "Verify Memory With Cold Tests", 2, [
       "Once a week, pick three old units and answer five questions each without notes. Compare to cards and lectures. Cold tests reveal illusions early.",
@@ -83,7 +83,7 @@ export const howToRememberMore: SeoPageContent = {
     {
       question: "Can I remember more without flashcards?",
       answer:
-        "Yes with practice tests and self-quizzing. Flashcards scale better for large factual courses, which is why SmartFlashcards automates them.",
+        "Yes with practice tests and self-quizzing. Flashcards scale better for large factual courses, which is why MyRemynd automates them.",
     },
     {
       question: "Why do I forget after studying all day?",

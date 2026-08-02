@@ -15,10 +15,10 @@ export const activeRecallTechnique: SeoPageContent = {
   searchIntent: "informational",
   seoTitle: "Active Recall Technique: Step-by-Step Guide",
   metaDescription:
-    "Master the active recall technique with retrieval prompts, spacing, and honest feedback. Build the habit faster using SmartFlashcards.",
+    "Master the active recall technique with retrieval prompts, spacing, and honest feedback. Build the habit faster using MyRemynd.",
   h1: "The Active Recall Technique: How to Study by Retrieving",
   intro:
-    "The active recall technique is a structured way to turn retrieval practice into a repeatable study session. Instead of drifting through notes, you use clear prompts, deliberate pauses, and immediate feedback so each minute trains the memory you need under pressure. The technique works for flashcards, practice questions, and self-quizzes alike. SmartFlashcards automates the hardest parts—card creation and spaced scheduling—so you focus on answering well and rating your recall honestly.",
+    "The active recall technique is a structured way to turn retrieval practice into a repeatable study session. Instead of drifting through notes, you use clear prompts, deliberate pauses, and immediate feedback so each minute trains the memory you need under pressure. The technique works for flashcards, practice questions, and self-quizzes alike. MyRemynd automates the hardest parts—card creation and spaced scheduling—so you focus on answering well and rating your recall honestly.",
   sections: [
     section("technique-overview", "How the Technique Fits Together", 2, [
       "A complete active recall session has four phases: select material, retrieve without cues, check accuracy, and schedule the next attempt. Selection means choosing a bounded chunk, one lecture or one textbook section, so you do not drown in random facts. Retrieval means answering before you peek. Checking means marking right, wrong, or partial. Scheduling means harder items return sooner.",
@@ -26,19 +26,19 @@ export const activeRecallTechnique: SeoPageContent = {
     ]),
     section("prompt-design", "Designing Strong Retrieval Prompts", 2, [
       "A strong prompt targets one idea. Ask for a definition, a comparison, a step in a process, or a cause-effect link. Weak prompts copy entire slides verbatim, which lets your eyes wander without testing memory. Convert headings into questions: instead of reading Mitochondria function, ask What does the mitochondria do in cellular respiration?",
-      "SmartFlashcards breaks uploaded text into atomic cards automatically, but you can edit prompts to match how your professor phrases exams. Aligning cue wording with test wording reduces surprise on exam day because you have already retrieved answers in the same format.",
+      "MyRemynd breaks uploaded text into atomic cards automatically, but you can edit prompts to match how your professor phrases exams. Aligning cue wording with test wording reduces surprise on exam day because you have already retrieved answers in the same format.",
     ]),
     section("timing-and-pause", "The Pause That Makes Recall Active", 2, [
       "Before revealing an answer, hold a silent count of three to ten seconds. Longer pauses help on complex cards. If nothing arrives, guess partially, then reveal. Partial guesses still exercise retrieval pathways and show you where knowledge is fragmented versus missing entirely.",
       "Avoid multitasking during the pause. Retrieval is attention-heavy. A short, phone-free session with real pauses beats an hour of half-focused flipping. The technique rewards quality of attention, not volume of exposure.",
     ]),
     section("feedback-loop", "Closing the Feedback Loop", 2, [
-      "After each retrieval, classify the result. Correct with ease, correct with effort, incorrect, or incorrect but I knew it after seeing the answer. Those categories map to scheduler ratings in SmartFlashcards and determine when the card returns. Honest effort ratings matter more than optimistic ones because they control spacing.",
+      "After each retrieval, classify the result. Correct with ease, correct with effort, incorrect, or incorrect but I knew it after seeing the answer. Those categories map to scheduler ratings in MyRemynd and determine when the card returns. Honest effort ratings matter more than optimistic ones because they control spacing.",
       "When you miss a card, read the explanation once, then look away and restate the answer in your own words. That restatement is a second retrieval event in the same minute and prevents the correction from becoming another passive read.",
     ]),
     section("combine-spacing", "Pair the Technique with Spacing", 2, [
       "Active recall once is helpful; active recall at expanding intervals is transformative. Spacing forces you to retrieve again just as forgetting begins, which deepens storage. The technique supplies the retrieval event; spaced repetition supplies the calendar.",
-      "SmartFlashcards combines both by default. You retrieve on each due card, and FSRS adjusts intervals from your performance history. You do not need separate apps for making cards, reviewing them, and scheduling them.",
+      "MyRemynd combines both by default. You retrieve on each due card, and FSRS adjusts intervals from your performance history. You do not need separate apps for making cards, reviewing them, and scheduling them.",
     ]),
     section("session-template", "A Twenty-Minute Session Template", 2, [
       "Minute zero to two: skim how many cards are due and silence notifications. Minutes two to fifteen: run the four-phase loop on each due card without skipping pauses. Minutes fifteen to eighteen: note three weak themes you missed twice. Minutes eighteen to twenty: add or edit one card per weak theme so tomorrow's queue targets real gaps.",
@@ -54,7 +54,7 @@ export const activeRecallTechnique: SeoPageContent = {
       "If sessions feel overwhelming, lower new cards per day and protect due reviews first. Backlogs usually mean inconsistent days, not a broken method. FSRS will compress mature cards over time, but only if you return to honest ratings instead of resetting decks out of frustration.",
       "If you forget between sessions despite reviewing, spacing may be too wide for your context or cards may lack elaboration. Add a why line to explanations, link to a concrete example, or solve one practice problem per missed theme. The technique is working when misses become specific and repeatable, not random and vague.",
     ]),
-    section("smartflashcards-technique", "Run the Technique in SmartFlashcards", 2, [
+    section("smartflashcards-technique", "Run the Technique in MyRemynd", 2, [
       "Paste notes or upload a PDF to generate a starter deck. Edit any vague prompts before your first full session. Use Again, Hard, Good, and Easy ratings as honest effort signals, not mood signals. Let FSRS manage intervals while you manage attention.",
       "Over weeks, your due count stabilizes as memories mature. That is the technique working: fewer emergencies before exams because retrieval happened steadily all term. Active recall is not a cramming substitute; it is the operating system for normal academic life.",
     ]),
@@ -68,7 +68,7 @@ export const activeRecallTechnique: SeoPageContent = {
     {
       question: "How many cards should I do per session?",
       answer:
-        "Follow your due queue rather than a fixed number. SmartFlashcards shows due cards for the day, which keeps sessions predictable, usually ten to twenty minutes for most students.",
+        "Follow your due queue rather than a fixed number. MyRemynd shows due cards for the day, which keeps sessions predictable, usually ten to twenty minutes for most students.",
     },
     {
       question: "Should I rewrite missed cards immediately?",
@@ -83,7 +83,7 @@ export const activeRecallTechnique: SeoPageContent = {
     {
       question: "Does the technique work for group study?",
       answer:
-        "Partners can quiz each other with the same pause-and-answer rules. Personal decks in SmartFlashcards still help for daily spacing between group sessions.",
+        "Partners can quiz each other with the same pause-and-answer rules. Personal decks in MyRemynd still help for daily spacing between group sessions.",
     },
   ],
   relatedSlugs: [

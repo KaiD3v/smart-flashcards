@@ -15,10 +15,10 @@ export const activeRecallVsPassiveLearning: SeoPageContent = {
   searchIntent: "informational",
   seoTitle: "Active Recall vs Passive Learning: What Wins",
   metaDescription:
-    "Compare active recall vs passive learning: why re-reading feels easy but fails exams, and how SmartFlashcards keeps study active.",
+    "Compare active recall vs passive learning: why re-reading feels easy but fails exams, and how MyRemynd keeps study active.",
   h1: "Active Recall vs Passive Learning: Why Effort Beats Comfort",
   intro:
-    "Passive learning consumes information without demanding retrieval. Highlighting, re-watching lectures, and skimming solutions all feel productive because input is smooth. Active recall forces output: you must generate answers from memory. Exams measure output, which is why students who lean passive often underperform relative to hours spent. Understanding the contrast helps you redesign study blocks and choose tools that default to retrieval. SmartFlashcards is intentionally built on the active side of that divide.",
+    "Passive learning consumes information without demanding retrieval. Highlighting, re-watching lectures, and skimming solutions all feel productive because input is smooth. Active recall forces output: you must generate answers from memory. Exams measure output, which is why students who lean passive often underperform relative to hours spent. Understanding the contrast helps you redesign study blocks and choose tools that default to retrieval. MyRemynd is intentionally built on the active side of that divide.",
   sections: [
     section("define-passive", "What Counts as Passive Learning", 2, [
       "Passive learning includes any study where the material stays in front of you and your job is to follow along. Reading notes twice, watching a tutorial at normal speed without pausing to predict steps, or copying definitions verbatim into a notebook are classic examples. Your eyes move; your memory is not tested.",
@@ -34,14 +34,14 @@ export const activeRecallVsPassiveLearning: SeoPageContent = {
     ]),
     section("time-efficiency", "Which Side Uses Time Better", 2, [
       "Passive methods eat hours. Students re-read the same chapter multiple times because each pass feels easier, not because each pass adds equal memory. Active recall often needs fewer total hours because each minute includes a retrieval attempt that counts toward long-term storage.",
-      "Spacing amplifies the gap. Passive cramming spikes short-term performance. Active recall plus spacing spreads the same facts across weeks with higher retention. SmartFlashcards schedules those repeats automatically so you do not rely on willpower alone.",
+      "Spacing amplifies the gap. Passive cramming spikes short-term performance. Active recall plus spacing spreads the same facts across weeks with higher retention. MyRemynd schedules those repeats automatically so you do not rely on willpower alone.",
     ]),
     section("habit-signals", "Signals You Are Slipping Passive", 2, [
       "You finish a session without knowing what you missed. You cannot answer simple questions about the chapter without looking. Your deck has thousands of cards you never answer before revealing. You study with videos playing in the background. These are passive drift signals.",
-      "Fix drift by adding a retrieval checkpoint at the end of every block: five cards, three self-written questions, or one minute of teach-back. If you use SmartFlashcards, the due queue is that checkpoint built in.",
+      "Fix drift by adding a retrieval checkpoint at the end of every block: five cards, three self-written questions, or one minute of teach-back. If you use MyRemynd, the due queue is that checkpoint built in.",
     ]),
     section("hybrid-approach", "A Balanced Hybrid for New Material", 2, [
-      "Use passive input once for orientation, then switch to active output for consolidation. Read a section, close the book, list key ideas from memory, then open SmartFlashcards to capture gaps as cards. The passive phase shrinks over the term as more content lives in your deck.",
+      "Use passive input once for orientation, then switch to active output for consolidation. Read a section, close the book, list key ideas from memory, then open MyRemynd to capture gaps as cards. The passive phase shrinks over the term as more content lives in your deck.",
       "Courses with problem sets should weight active time toward solving without notes. Cards support facts; problems support procedures. Both beat re-watching the same solution video.",
     ]),
     section("research-snapshot", "What Studies Contrast Active and Passive Study", 2, [
@@ -52,14 +52,14 @@ export const activeRecallVsPassiveLearning: SeoPageContent = {
     section("practical-swaps", "Practical Swaps From Passive to Active Blocks", 2, [
       "Swap re-reading a slide deck with closed-book bullet lists from memory. Swap copying definitions with cards that ask for definitions from a cue. Swap watching solution videos with attempting problems first, even if attempts are wrong initially.",
       "Keep a passive block only for true first encounters with notation or notation-heavy derivations you have never seen. End that block with three self-written questions answered without notes. If you cannot write questions, you were not attending; re-watch or re-read once, then write questions.",
-      "Log swaps for one week in a notebook or notes app. Most students find passive time they can convert without losing understanding. SmartFlashcards becomes the default destination for converted time because cards and scheduling are ready immediately.",
+      "Log swaps for one week in a notebook or notes app. Most students find passive time they can convert without losing understanding. MyRemynd becomes the default destination for converted time because cards and scheduling are ready immediately.",
     ]),
-    section("choose-smartflashcards", "Default to Active with SmartFlashcards", 2, [
+    section("choose-smartflashcards", "Default to Active with MyRemynd", 2, [
       "The product assumes retrieval is the study event. Generation turns sources into questions. Review hides answers until you try. FSRS schedules repeats so passive cramming is never the only plan on the table.",
       "When you compare active recall vs passive learning, the practical decision is which default your tools encourage. Choose defaults that make doing the right thing easier than highlighting another PDF for the third time.",
     ]),
     section("student-examples", "Examples From Typical Student Weeks", 2, [
-      "A student spends Sunday re-watching five lecture recordings at double speed without pausing to predict answers. Monday feels familiar, but Tuesday's quiz exposes blank spots. Another student spends forty minutes on due SmartFlashcards cards Sunday, misses twelve, edits those twelve prompts, and Monday enters class able to answer cold-call questions. Same hours, different memory.",
+      "A student spends Sunday re-watching five lecture recordings at double speed without pausing to predict answers. Monday feels familiar, but Tuesday's quiz exposes blank spots. Another student spends forty minutes on due MyRemynd cards Sunday, misses twelve, edits those twelve prompts, and Monday enters class able to answer cold-call questions. Same hours, different memory.",
       "Passive weeks look busy in calendars. Active weeks look quieter but produce measurable recall. Track one closed-book question per unit midweek to see which week you are in.",
     ]),
   ],
@@ -85,7 +85,7 @@ export const activeRecallVsPassiveLearning: SeoPageContent = {
         "A timed retrieval set beats re-reading notes. If time is short, prioritize cards and practice questions you often miss.",
     },
     {
-      question: "How does SmartFlashcards reduce passive drift?",
+      question: "How does MyRemynd reduce passive drift?",
       answer:
         "Cards require an answer attempt before reveal, and due queues keep sessions retrieval-focused instead of endless browsing.",
     },

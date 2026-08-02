@@ -15,10 +15,10 @@ export const longTermMemoryLearning: SeoPageContent = {
   searchIntent: "informational",
   seoTitle: "Long-Term Memory Learning: A Practical Guide",
   metaDescription:
-    "Learn how long-term memory forms and why spaced repetition with FSRS in SmartFlashcards is the most reliable path to durable knowledge.",
+    "Learn how long-term memory forms and why spaced repetition with FSRS in MyRemynd is the most reliable path to durable knowledge.",
   h1: "Long-Term Memory Learning: Beyond Short-Term Cramming",
   intro:
-    "Long-term memory learning is the process of storing information so it remains accessible weeks, months, or years later. Exam cramming fills working memory temporarily. True long-term learning requires repeated retrieval at expanding intervals that strengthen neural connections over time. SmartFlashcards targets long-term storage directly by pairing AI-generated flashcards with FSRS, a scheduling algorithm designed to keep memories above ninety percent recall probability with minimal daily effort across an entire academic career. The shift from cramming to spacing is the single highest-leverage change most students can make today. This guide explains the science and the daily habits that make durable learning stick.",
+    "Long-term memory learning is the process of storing information so it remains accessible weeks, months, or years later. Exam cramming fills working memory temporarily. True long-term learning requires repeated retrieval at expanding intervals that strengthen neural connections over time. MyRemynd targets long-term storage directly by pairing AI-generated flashcards with FSRS, a scheduling algorithm designed to keep memories above ninety percent recall probability with minimal daily effort across an entire academic career. The shift from cramming to spacing is the single highest-leverage change most students can make today. This guide explains the science and the daily habits that make durable learning stick.",
   sections: [
     section("memory-systems", "How Memory Systems Differ", 2, [
       "Working memory holds a small amount of information for seconds to minutes. It supports active thinking but clears quickly when you move to a new task. Long-term memory stores vast amounts of knowledge indefinitely, but writing to it requires effort and the right conditions.",
@@ -27,7 +27,7 @@ export const longTermMemoryLearning: SeoPageContent = {
     ]),
     section("encoding-strength", "Encoding Strength and Retrieval Routes", 2, [
       "Strong encoding creates multiple retrieval routes to the same memory. Connecting a fact to a visual image, a personal example, and a related concept gives your brain several paths to access it later. Weak encoding relies on a single context, such as the page number where you first saw the information.",
-      "SmartFlashcards encourages strong encoding by letting you edit AI-generated cards with personal associations and contextual answers. Each review through FSRS then strengthens whichever routes you built during card creation.",
+      "MyRemynd encourages strong encoding by letting you edit AI-generated cards with personal associations and contextual answers. Each review through FSRS then strengthens whichever routes you built during card creation.",
     ]),
     section("consolidation", "Consolidation Over Days and Weeks", 2, [
       "Long-term memory consolidation is not instant. Synaptic changes continue for hours and days after learning. Spacing reviews across that consolidation window produces stronger storage than massed repetition in a single session.",
@@ -39,19 +39,19 @@ export const longTermMemoryLearning: SeoPageContent = {
     ]),
     section("lifelong-learning", "Long-Term Learning for Lifelong Knowledge", 2, [
       "Medical licensing, professional certifications, and language fluency all require knowledge that persists beyond one exam date. Long-term memory learning is not a student phase; it is a career skill. The same principles apply whether you are twenty or fifty.",
-      "SmartFlashcards supports ongoing learning with decks you can maintain indefinitely. Cards that reach mature FSRS intervals may appear only once every few months, keeping professional knowledge current without daily burden.",
+      "MyRemynd supports ongoing learning with decks you can maintain indefinitely. Cards that reach mature FSRS intervals may appear only once every few months, keeping professional knowledge current without daily burden.",
     ]),
     section("cramming-contrast", "Why Cramming Fails Long-Term Goals", 2, [
       "Cramming maximizes performance on an imminent test by overloading working memory. It does not build the stable traces long-term learning requires. Students who cram for finals often re-learn the same material the following semester.",
       "Replacing cramming with distributed FSRS reviews throughout the term means finals become confirmation of knowledge you already hold rather than emergency encoding sessions. Stress drops because the memory work happened gradually.",
     ]),
-    section("smartflashcards-approach", "The SmartFlashcards Approach to Durable Learning", 2, [
+    section("smartflashcards-approach", "The MyRemynd Approach to Durable Learning", 2, [
       "Upload your course material, generate flashcards with AI, and review daily through FSRS. That workflow addresses the three requirements of long-term memory learning: active retrieval, spaced timing, and consistent repetition over calendar time.",
       "Your dashboard shows retention metrics and due counts so you can see progress objectively. Long-term memory learning stops being an abstract aspiration and becomes a daily practice with measurable outcomes.",
     ]),
     section("neuroscience", "What Neuroscience Tells Us", 2, [
       "Long-term potentiation strengthens synaptic connections through repeated activation. Spaced retrieval triggers that activation at intervals that match natural decay rates, making each activation more effective than massed repetition. FSRS models this decay mathematically so software can replicate optimal timing.",
-      "You do not need to understand neuroscience to benefit from it. SmartFlashcards applies the research through FSRS scheduling while you perform the retrieval practice that drives the underlying biology. The result is durable memory without requiring you to manage the science manually.",
+      "You do not need to understand neuroscience to benefit from it. MyRemynd applies the research through FSRS scheduling while you perform the retrieval practice that drives the underlying biology. The result is durable memory without requiring you to manage the science manually.",
       "Hippocampal replay during sleep consolidates memories reviewed before bedtime. A short evening FSRS session followed by sleep can strengthen encoding overnight, making morning reviews of the same material noticeably easier.",
     ]),
   ],
@@ -74,7 +74,7 @@ export const longTermMemoryLearning: SeoPageContent = {
     {
       question: "What retention rate should I target?",
       answer:
-        "FSRS in SmartFlashcards targets high recall probability, typically around ninety percent, balancing retention against review workload. You can adjust study intensity by completing reviews promptly each day.",
+        "FSRS in MyRemynd targets high recall probability, typically around ninety percent, balancing retention against review workload. You can adjust study intensity by completing reviews promptly each day.",
     },
     {
       question: "Is long-term memory learning different for procedural skills?",

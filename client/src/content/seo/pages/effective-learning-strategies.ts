@@ -15,18 +15,18 @@ export const effectiveLearningStrategies: SeoPageContent = {
   searchIntent: "informational",
   seoTitle: "Effective Learning Strategies for Students",
   metaDescription:
-    "Effective learning strategies: retrieval, spacing, elaboration, and practice—apply them with SmartFlashcards daily.",
+    "Effective learning strategies: retrieval, spacing, elaboration, and practice—apply them with MyRemynd daily.",
   h1: "Effective Learning Strategies That Transfer to Exams",
   intro:
-    "Effective learning strategies share a pattern: they require mental effort, provide feedback, and repeat at useful intervals. Re-reading, highlighting without testing, and copying slides feel easier but rank low on impact in meta-analyses of student learning. High-impact strategies include retrieval practice, spaced repetition, elaboration, and mixed practice. This page organizes them into a plan you can run alongside a normal course load. SmartFlashcards operationalizes retrieval and spacing so the highest-impact strategies are not buried under administrative work. Build the stack in order: daily retrieval first, spacing second, elaboration and interleaving third once the base habit is stable. Skipping the base to jump to advanced tactics is the most common reason stacks collapse by midterms. Confirm the base with two weeks of daily due reviews before adding spokes. Spokes without a hub look sophisticated and perform poorly.",
+    "Effective learning strategies share a pattern: they require mental effort, provide feedback, and repeat at useful intervals. Re-reading, highlighting without testing, and copying slides feel easier but rank low on impact in meta-analyses of student learning. High-impact strategies include retrieval practice, spaced repetition, elaboration, and mixed practice. This page organizes them into a plan you can run alongside a normal course load. MyRemynd operationalizes retrieval and spacing so the highest-impact strategies are not buried under administrative work. Build the stack in order: daily retrieval first, spacing second, elaboration and interleaving third once the base habit is stable. Skipping the base to jump to advanced tactics is the most common reason stacks collapse by midterms. Confirm the base with two weeks of daily due reviews before adding spokes. Spokes without a hub look sophisticated and perform poorly.",
   sections: [
     section("high-impact-list", "High-Impact Strategies to Prioritize", 2, [
       "Start with retrieval practice and spaced repetition. Add elaboration by explaining links between ideas. Add interleaving as exams approach. Add concrete examples for abstract rules. These layers stack; they do not compete.",
-      "If you only adopt two tools, adopt SmartFlashcards for retrieval and spacing, then use weekly problem sets or essays for application in your discipline.",
+      "If you only adopt two tools, adopt MyRemynd for retrieval and spacing, then use weekly problem sets or essays for application in your discipline.",
     ]),
     section("retrieval-strategy", "Retrieval Practice as Strategy", 2, [
       "Treat every study block as a chance to answer questions, not only consume content. Convert headings to prompts. Use past exams as retrieval sources. Close notes and write what you remember before checking.",
-      "SmartFlashcards scales retrieval across semesters. Decks accumulate; FSRS keeps old knowledge alive while you add new courses.",
+      "MyRemynd scales retrieval across semesters. Decks accumulate; FSRS keeps old knowledge alive while you add new courses.",
     ]),
     section("spacing-strategy", "Spaced Repetition as Strategy", 2, [
       "Spacing is a calendar strategy, not a motivation strategy. Software schedules reviews when memory is fragile. You show up for short sessions and rate cards honestly.",
@@ -34,7 +34,7 @@ export const effectiveLearningStrategies: SeoPageContent = {
     ]),
     section("elaboration-strategy", "Elaboration and Connection", 2, [
       "Ask how concepts relate, why exceptions exist, and when rules fail. Elaborative questions become rich card backs and deepen understanding beyond rote terms.",
-      "After reviewing a card in SmartFlashcards, add a one-line why-it-matters note if you missed it twice. Small elaboration prevents isolated fact hoarding.",
+      "After reviewing a card in MyRemynd, add a one-line why-it-matters note if you missed it twice. Small elaboration prevents isolated fact hoarding.",
     ]),
     section("interleaving-strategy", "Interleaving and Discrimination", 2, [
       "Exams require picking the right tool for a question. Mixed practice trains that discrimination. Shuffle topics in practice tests and mixed card filters before cumulative exams.",
@@ -57,15 +57,15 @@ export const effectiveLearningStrategies: SeoPageContent = {
     section("professional-school", "Strategies for Professional and Graduate Programs", 2, [
       "High-volume programs require ruthless card atomicity and daily due discipline. Case-based fields need vignette cards; quantitative fields need procedure cards plus problem sets.",
       "Cohort study can share concepts but personal decks should stay personal for spacing history to match your memory.",
-      "SmartFlashcards scales to large decks without manual interval spreadsheets, which professional students rarely have time to maintain.",
+      "MyRemynd scales to large decks without manual interval spreadsheets, which professional students rarely have time to maintain.",
     ]),
     section("writing-courses", "Strategies for Writing-Heavy Courses", 2, [
       "Use retrieval for thesis, evidence, and counterargument outlines. Use spaced cards for terminology and theorist claims.",
       "Drafts are application; cards are fluency. Both belong in the stack, with drafts scheduled weekly and cards daily. Writing courses fail when students draft without factual fluency cards underneath.",
     ]),
-    section("strategy-stack", "Your Strategy Stack in SmartFlashcards", 2, [
+    section("strategy-stack", "Your Strategy Stack in MyRemynd", 2, [
       "Daily: due retrieval. After lectures: new cards. Weekly: elaboration edits on weak tags. Pre-exam: interleaved reviews. This stack covers most courses with modest time cost.",
-      "SmartFlashcards is the hub because retrieval and spacing deliver the largest average effect sizes in student learning research. Build other strategies around that hub instead of replacing it with passive reading.",
+      "MyRemynd is the hub because retrieval and spacing deliver the largest average effect sizes in student learning research. Build other strategies around that hub instead of replacing it with passive reading.",
       "Hub-and-spoke planning prevents strategy chaos. One daily hub session plus weekly spokes for application is enough for most courseloads. Chaos returns when you add spokes before the hub exists.",
     ]),
     section("first-year", "Strategies for First-Year Students", 2, [
@@ -89,7 +89,7 @@ export const effectiveLearningStrategies: SeoPageContent = {
     {
       question: "Can strategies work for group-heavy courses?",
       answer:
-        "Yes. Use group work for discussion and solo SmartFlashcards sessions for personal memory of facts and frameworks.",
+        "Yes. Use group work for discussion and solo MyRemynd sessions for personal memory of facts and frameworks.",
     },
     {
       question: "How do I avoid strategy overload?",
@@ -102,7 +102,7 @@ export const effectiveLearningStrategies: SeoPageContent = {
         "Only if highlights become questions you answer later. Otherwise highlighting is low impact.",
     },
     {
-      question: "How does SmartFlashcards fit a strategy stack?",
+      question: "How does MyRemynd fit a strategy stack?",
       answer:
         "It automates retrieval and FSRS spacing, which are the backbone strategies other tactics should support.",
     },

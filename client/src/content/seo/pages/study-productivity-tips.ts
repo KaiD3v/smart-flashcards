@@ -15,14 +15,14 @@ export const studyProductivityTips: SeoPageContent = {
   searchIntent: "informational",
   seoTitle: "Study Productivity Tips That Save Real Time",
   metaDescription:
-    "Practical study productivity tips: queues, focus, spacing, and SmartFlashcards—cut waste, keep retention high.",
+    "Practical study productivity tips: queues, focus, spacing, and MyRemynd—cut waste, keep retention high.",
   h1: "Study Productivity Tips for Busy Students",
   intro:
-    "Study productivity tips only help when they change behavior, not when they decorate a Pinterest board. The highest-return tips reduce passive time, protect focus, and make progress visible every day. This list prioritizes actions backed by learning science and realistic schedules. SmartFlashcards supports several tips directly through due queues, AI card generation, and FSRS scheduling so productivity is built into the tool rather than bolted on as motivation quotes. Pick three tips this week, run them daily for fourteen days, then keep only the ones that changed your due completion or cold quiz scores. A short active list beats a long wish list every semester. Execute three tips fully before collecting more.",
+    "Study productivity tips only help when they change behavior, not when they decorate a Pinterest board. The highest-return tips reduce passive time, protect focus, and make progress visible every day. This list prioritizes actions backed by learning science and realistic schedules. MyRemynd supports several tips directly through due queues, AI card generation, and FSRS scheduling so productivity is built into the tool rather than bolted on as motivation quotes. Pick three tips this week, run them daily for fourteen days, then keep only the ones that changed your due completion or cold quiz scores. A short active list beats a long wish list every semester. Execute three tips fully before collecting more.",
   sections: [
     section("tip-due-first", "Tip 1: Always Do Due Reviews First", 2, [
       "Open your day with scheduled retrieval before new content. Due reviews defend everything you already learned. Skipping them to chase new lectures is how backlogs and exam panic appear.",
-      "SmartFlashcards shows due counts immediately. Treat zero due as the finish line for your memory workout before optional reading.",
+      "MyRemynd shows due counts immediately. Treat zero due as the finish line for your memory workout before optional reading.",
     ]),
     section("tip-one-tab", "Tip 2: One Tab, One Task", 2, [
       "Keep one study tab open. Multiple resources invite switching, which destroys depth. If you need references, batch lookup in a separate block after retrieval.",
@@ -34,7 +34,7 @@ export const studyProductivityTips: SeoPageContent = {
     ]),
     section("tip-capture", "Tip 4: Capture Once, Review Many Times", 2, [
       "Do not rebuild notes weekly. Capture lecture ideas into cards once, then let spacing handle repeats. Re-copying notes is busywork disguised as productivity.",
-      "Paste rough notes into SmartFlashcards, edit generated prompts quickly, and move on. Capture day is different from review day.",
+      "Paste rough notes into MyRemynd, edit generated prompts quickly, and move on. Capture day is different from review day.",
     ]),
     section("tip-energy", "Tip 5: Match Task to Energy", 2, [
       "High energy: new complex cards or hard problems. Medium energy: due reviews. Low energy: light editing of prompts or organizing subjects, not passive scrolling.",
@@ -42,12 +42,12 @@ export const studyProductivityTips: SeoPageContent = {
     ]),
     section("tip-weekly", "Tip 6: Weekly Reset, Not Daily Drama", 2, [
       "Once a week, check upcoming deadlines, adjust new card limits, and delete duplicate cards. Daily drama about whether you are behind wastes focus.",
-      "A weekly ten-minute deck hygiene in SmartFlashcards prevents clutter that slows every future session.",
+      "A weekly ten-minute deck hygiene in MyRemynd prevents clutter that slows every future session.",
     ]),
     section("tip-deadlines", "Tip 8: Map Deadlines to Retrieval Milestones", 2, [
       "Deadlines on a calendar are not study plans. Translate each deadline into retrieval milestones: cards created by date X, mixed review by date Y, timed practice by date Z. Milestones prevent last-minute passive panic.",
       "Work backward from exam day. Two weeks out, mixed tags. One week out, timed sets. Three days out, sleep protection and light due maintenance, not brand-new marathon input.",
-      "SmartFlashcards due counts tell you if milestones are realistic. Rising due counts mean adjust new cards or add short sessions before the curve becomes unmanageable.",
+      "MyRemynd due counts tell you if milestones are realistic. Rising due counts mean adjust new cards or add short sessions before the curve becomes unmanageable.",
     ]),
     section("tip-distractions", "Tip 9: Design Distractions Out of the Room", 2, [
       "Notifications are productivity taxes. Silence them for the study block length only. You can re-enable after a defined break, which prevents indefinite avoidance disguised as breaks.",
@@ -68,11 +68,11 @@ export const studyProductivityTips: SeoPageContent = {
       "Physical basics are boring tips, but they determine whether your brain can sustain active recall for even fifteen minutes. Treat them as non-negotiable infrastructure.",
     ]),
     section("tip-lms", "Tip 14: Do Not Confuse LMS Time With Study Time", 2, [
-      "Clicking through modules feels productive but often lacks retrieval. Log LMS time separately from SmartFlashcards retrieval time.",
+      "Clicking through modules feels productive but often lacks retrieval. Log LMS time separately from MyRemynd retrieval time.",
       "Aim for a daily ratio favoring retrieval over module clicks as exams approach.",
     ]),
     section("tip-system", "Tip 7: Productivity Is a System", 2, [
-      "Tips work together: due-first, single tab, timer, capture once, energy matching, weekly reset. SmartFlashcards anchors the system with scheduling you do not maintain by hand.",
+      "Tips work together: due-first, single tab, timer, capture once, energy matching, weekly reset. MyRemynd anchors the system with scheduling you do not maintain by hand.",
       "When a tip fails, shrink it until it runs. Productivity for students is maintenance, not heroics.",
       "Review this tip list monthly. Keep three tips active, not thirteen half-active tips that clutter your attention. A short active list beats a long wish list every semester.",
     ]),
@@ -82,7 +82,7 @@ export const studyProductivityTips: SeoPageContent = {
       "Daily short retrieval plus batched life admin is the productive split.",
     ]),
     section("tip-clarity", "Tip 13: Write Tomorrow's First Task Tonight", 2, [
-      "One line: open SmartFlashcards and clear due cards before class. Tomorrow-you starts instantly without re-planning.",
+      "One line: open MyRemynd and clear due cards before class. Tomorrow-you starts instantly without re-planning.",
       "Planning at night removes morning decision fatigue, which is when students often choose passive scrolling instead.",
       "If mornings are chaotic, flip the habit: write the one-line task after your first class ends, then run due cards before afternoon classes begin.",
     ]),
@@ -109,7 +109,7 @@ export const studyProductivityTips: SeoPageContent = {
         "Minimize tools. One retrieval scheduler plus course-specific problem practice is enough for most students.",
     },
     {
-      question: "How does SmartFlashcards improve productivity?",
+      question: "How does MyRemynd improve productivity?",
       answer:
         "It automates card drafting and FSRS intervals so sessions start instantly with high-value work ready.",
     },

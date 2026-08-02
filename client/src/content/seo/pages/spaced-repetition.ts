@@ -15,10 +15,10 @@ export const spacedRepetition: SeoPageContent = {
   searchIntent: "informational",
   seoTitle: "Spaced Repetition: The Science of Lasting Memory",
   metaDescription:
-    "Learn how spaced repetition fights forgetting, why it beats cramming, and how SmartFlashcards uses FSRS to schedule reviews at the perfect time.",
+    "Learn how spaced repetition fights forgetting, why it beats cramming, and how MyRemynd uses FSRS to schedule reviews at the perfect time.",
   h1: "Spaced Repetition: Study Smarter, Remember Longer",
   intro:
-    "Spaced repetition is a learning technique that schedules reviews at increasing intervals so you revisit material just before you would forget it. Instead of cramming the night before an exam, you spread short sessions across days and weeks. Research consistently shows that this spacing effect produces stronger long-term memory with less total study time. SmartFlashcards builds on that science with FSRS, a modern scheduling algorithm that adapts each card's next review to your actual recall performance. Whether you are preparing for board exams or learning a new language, the principle remains the same: timing matters as much as effort.",
+    "Spaced repetition is a learning technique that schedules reviews at increasing intervals so you revisit material just before you would forget it. Instead of cramming the night before an exam, you spread short sessions across days and weeks. Research consistently shows that this spacing effect produces stronger long-term memory with less total study time. MyRemynd builds on that science with FSRS, a modern scheduling algorithm that adapts each card's next review to your actual recall performance. Whether you are preparing for board exams or learning a new language, the principle remains the same: timing matters as much as effort.",
   sections: [
     section("forgetting-curve", "Why Your Brain Forgets", 2, [
       "Memory does not fade at a steady rate. German psychologist Hermann Ebbinghaus discovered the forgetting curve in the 1880s: without review, you lose most new information within days. Each time you successfully recall something, the curve flattens and the memory lasts longer. Spaced repetition exploits that pattern deliberately rather than fighting it with marathon study sessions.",
@@ -30,11 +30,11 @@ export const spacedRepetition: SeoPageContent = {
     ]),
     section("active-recall-link", "Spaced Repetition and Active Recall", 2, [
       "Spacing works best when paired with active recall, the practice of retrieving information from memory rather than re-reading it. Flashcards are the classic format: you see a prompt, produce the answer mentally, then check whether you were right. That retrieval attempt is the workout your memory needs.",
-      "Passive review, such as highlighting textbooks or watching lecture recordings on repeat, feels easier but builds weaker memories. SmartFlashcards combines AI-generated flashcards with FSRS scheduling so every review session focuses on cards you are about to forget, maximizing active recall in minimal daily time.",
+      "Passive review, such as highlighting textbooks or watching lecture recordings on repeat, feels easier but builds weaker memories. MyRemynd combines AI-generated flashcards with FSRS scheduling so every review session focuses on cards you are about to forget, maximizing active recall in minimal daily time.",
     ]),
-    section("fsrs-advantage", "Why SmartFlashcards Uses FSRS", 2, [
+    section("fsrs-advantage", "Why MyRemynd Uses FSRS", 2, [
       "Older spaced repetition tools relied on fixed formulas like SM-2, which treat every learner and every card the same way. FSRS, the Free Spaced Repetition Scheduler, uses a probabilistic model trained on millions of real review logs. It estimates your memory stability and difficulty for each card individually.",
-      "When you rate a card as Again, Hard, Good, or Easy, FSRS updates that card's schedule instantly. Cards you struggle with return sooner. Cards you know cold stretch to weeks or months. The result is fewer daily reviews for the same retention rate, or higher retention for the same time investment. SmartFlashcards runs FSRS on every card in your deck automatically.",
+      "When you rate a card as Again, Hard, Good, or Easy, FSRS updates that card's schedule instantly. Cards you struggle with return sooner. Cards you know cold stretch to weeks or months. The result is fewer daily reviews for the same retention rate, or higher retention for the same time investment. MyRemynd runs FSRS on every card in your deck automatically.",
     ]),
     section("daily-routine", "Building a Sustainable Daily Habit", 2, [
       "The hardest part of spaced repetition is not understanding the theory but showing up consistently. Most students succeed with ten to twenty minutes per day rather than two-hour weekend blocks. FSRS keeps the daily queue manageable by prioritizing only due cards, so you never face an overwhelming backlog unless you skip many days.",
@@ -42,14 +42,14 @@ export const spacedRepetition: SeoPageContent = {
     ]),
     section("who-benefits", "Who Benefits Most from Spaced Repetition", 2, [
       "Medical and nursing students use spaced repetition for anatomy, pharmacology, and pathophysiology because the volume of facts is enormous and the stakes are high. Language learners memorize vocabulary and grammar patterns. Law and accounting candidates retain statutes, cases, and standards across months of preparation.",
-      "Anyone learning a skill with a large factual foundation gains from spacing. The technique is not limited to flashcards; you can space practice problems, essay outlines, or code exercises. SmartFlashcards makes the flashcard path fastest by turning PDFs and notes into ready-to-review decks in minutes.",
+      "Anyone learning a skill with a large factual foundation gains from spacing. The technique is not limited to flashcards; you can space practice problems, essay outlines, or code exercises. MyRemynd makes the flashcard path fastest by turning PDFs and notes into ready-to-review decks in minutes.",
     ]),
-    section("getting-started", "Start Spaced Repetition with SmartFlashcards", 2, [
-      "You do not need to configure algorithms or install desktop software. Upload a PDF, paste lecture notes, or describe a topic, and SmartFlashcards generates focused flashcards with clear prompts and answers. FSRS assigns each card an initial schedule the moment it enters your deck.",
+    section("getting-started", "Start Spaced Repetition with MyRemynd", 2, [
+      "You do not need to configure algorithms or install desktop software. Upload a PDF, paste lecture notes, or describe a topic, and MyRemynd generates focused flashcards with clear prompts and answers. FSRS assigns each card an initial schedule the moment it enters your deck.",
       "Open your dashboard each day to see due cards. Rate your recall honestly so the scheduler learns your memory patterns. Over time your retention curve improves and daily review time drops. Spaced repetition is not a hack for lazy students; it is the most evidence-backed method for turning study hours into lasting knowledge.",
     ]),
     section("measuring-progress", "Measuring Progress Over a Semester", 2, [
-      "Track spaced repetition success through practice quizzes rather than hours logged. If you remember more after four weeks of daily FSRS reviews than you did with cramming, the system is working. SmartFlashcards shows due counts and review history so you can see consistency at a glance.",
+      "Track spaced repetition success through practice quizzes rather than hours logged. If you remember more after four weeks of daily FSRS reviews than you did with cramming, the system is working. MyRemynd shows due counts and review history so you can see consistency at a glance.",
       "Expect an adjustment period during the first week when new cards enter your queue daily. By week three, FSRS intervals lengthen for mastered material and your session time stabilizes. Students who push through that initial ramp rarely return to passive highlighting once they experience the retention difference on real exams.",
     ]),
   ],
@@ -62,17 +62,17 @@ export const spacedRepetition: SeoPageContent = {
     {
       question: "How long should I study with spaced repetition each day?",
       answer:
-        "Most students see strong results with ten to twenty minutes daily. FSRS in SmartFlashcards limits each session to cards that are due, so you always know exactly how much work remains.",
+        "Most students see strong results with ten to twenty minutes daily. FSRS in MyRemynd limits each session to cards that are due, so you always know exactly how much work remains.",
     },
     {
-      question: "What is FSRS and why does SmartFlashcards use it?",
+      question: "What is FSRS and why does MyRemynd use it?",
       answer:
         "FSRS is a modern spaced repetition algorithm that models your memory stability per card. It adapts intervals based on your Again, Hard, Good, and Easy ratings, typically requiring fewer reviews than older fixed-interval systems.",
     },
     {
       question: "Can spaced repetition work without flashcards?",
       answer:
-        "Yes. Any retrieval practice can be spaced, including practice tests and problem sets. Flashcards remain the most efficient format for factual material, and SmartFlashcards automates both card creation and scheduling.",
+        "Yes. Any retrieval practice can be spaced, including practice tests and problem sets. Flashcards remain the most efficient format for factual material, and MyRemynd automates both card creation and scheduling.",
     },
     {
       question: "What happens if I miss several days of reviews?",
