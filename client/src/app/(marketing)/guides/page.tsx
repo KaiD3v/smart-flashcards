@@ -3,12 +3,25 @@ import Link from "next/link";
 import { getPagesByCluster } from "@/content/seo/registry";
 import type { SeoCluster } from "@/content/seo/types";
 import { CLUSTER_LABELS } from "@/lib/seo/constants";
+import { absoluteUrl } from "@/lib/seo/url";
+import { env } from "@/lib/env";
 import { BackgroundDecor } from "@/components/marketing/background-decor";
+
+const guidesUrl = absoluteUrl("/guides");
 
 export const metadata: Metadata = {
   title: "Study guides & learning resources",
   description:
-    "Free guides on AI flashcards, spaced repetition, active recall, exam prep, medical school study, and Anki alternatives from SmartFlashcards.",
+    "Free guides on AI flashcards, spaced repetition, active recall, exam prep, medical school study, and Anki alternatives from MyRemynd.",
+  alternates: { canonical: guidesUrl },
+  openGraph: {
+    type: "website",
+    title: "Study guides & learning resources",
+    description:
+      "Free guides on AI flashcards, spaced repetition, active recall, exam prep, medical school study, and Anki alternatives from MyRemynd.",
+    url: guidesUrl,
+    siteName: env.siteName,
+  },
 };
 
 const CLUSTER_ORDER: SeoCluster[] = [

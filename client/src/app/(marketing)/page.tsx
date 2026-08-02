@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -14,6 +15,22 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { absoluteUrl } from "@/lib/seo/url";
+import { env } from "@/lib/env";
+
+const homeUrl = absoluteUrl("/");
+
+export const metadata: Metadata = {
+  alternates: { canonical: homeUrl },
+  openGraph: {
+    type: "website",
+    title: `${env.siteName} – Study smarter with AI flashcards`,
+    description:
+      "AI-generated flashcards with science-backed spaced repetition. Create subjects, generate decks, and review smarter.",
+    url: homeUrl,
+    siteName: env.siteName,
+  },
+};
 
 export default function LandingPage() {
   return (
@@ -38,7 +55,7 @@ export default function LandingPage() {
               and spaced repetition.
             </h1>
             <p className="mt-5 text-pretty text-base text-muted-foreground sm:text-lg">
-              Paste your notes and SmartFlashcards builds a focused deck for
+              Paste your notes and MyRemynd builds a focused deck for
               you. Then a science-backed FSRS engine schedules each review for
               maximum retention.
             </p>
@@ -98,7 +115,7 @@ function HeroPreview() {
           <span className="h-2.5 w-2.5 rounded-full bg-warning/70" />
           <span className="h-2.5 w-2.5 rounded-full bg-success/70" />
           <span className="ml-3 text-xs text-muted-foreground">
-            smartflashcards.com / dashboard
+            myremynd.com / dashboard
           </span>
         </div>
         <CardContent className="grid gap-5 p-6 sm:grid-cols-3">
@@ -293,7 +310,7 @@ function Cta() {
           Ready to remember everything?
         </h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          Join SmartFlashcards and replace cramming with calm, daily reviews.
+          Join MyRemynd and replace cramming with calm, daily reviews.
         </p>
         <div className="mt-6 flex justify-center gap-2">
           <Button asChild variant="gradient" size="lg">

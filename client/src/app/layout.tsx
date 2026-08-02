@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { Providers } from "@/providers/providers";
 import { env } from "@/lib/env";
+import { absoluteUrl } from "@/lib/seo/url";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -40,7 +41,7 @@ export const metadata: Metadata = {
     title: `${env.siteName} – Study smarter with AI flashcards`,
     description:
       "AI-generated flashcards with science-backed spaced repetition. Create subjects, generate decks, and review smarter.",
-    url: env.siteUrl,
+    url: absoluteUrl("/"),
   },
   twitter: {
     card: "summary_large_image",
